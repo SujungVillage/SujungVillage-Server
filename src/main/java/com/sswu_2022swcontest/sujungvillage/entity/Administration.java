@@ -14,7 +14,7 @@ public class Administration {
 
     @GeneratedValue
     @Id
-    private Long administrationId;            // 기숙사 id
+    private Long administrationId;
 
     @ManyToOne
     @JoinColumn(name = "domitory_id")
