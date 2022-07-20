@@ -14,14 +14,15 @@ public class Domitory {
 
     @GeneratedValue
     @Id
-    private Long domitoryId;            // 기숙사 id
+    @Column (name = "DOMITORY_ID")
+    private Long id;            // 기숙사 id
 
     private String domitoryName;        // 기숙사명
 
     private String address;             // 기숙사 주소
 
-    public Domitory(Long domitoryId, String domitoryName, String address) {
-        this.domitoryId = domitoryId;
+    public Domitory(Long id, String domitoryName, String address) {
+        this.id = id;
         this.domitoryName = domitoryName;
         this.address = address;
     }

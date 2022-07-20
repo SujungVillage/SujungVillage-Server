@@ -14,24 +14,23 @@ public class Administration {
 
     @GeneratedValue
     @Id
-    private Long administrationId;
+    @Column(name = "ADMINISTRATION_ID")
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "domitory_id")
-    private Domitory domitory;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne
+    @JoinColumn (name = "USER_ID")
     private User user;
+
+    @ManyToOne
+    @JoinColumn (name = "DOMITORY_ID")
+    private Domitory domitory;          // 기숙사 id
 
     private String description;     // 상세주소
 
-    public Administration(Long administrationId, Domitory domitory, User user, String description) {
-        this.administrationId = administrationId;
-        this.domitory = domitory;
+    public Administration(Long id, User user, Domitory domitory, String description) {
+        this.id = id;
         this.user = user;
+        this.domitory = domitory;
         this.description = description;
     }
-
-
 }
