@@ -1,45 +1,40 @@
 package com.sswu_2022swcontest.sujungvillage.entity;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
-@Table
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
-    @Column(name = "USER_ID")
-    private String id;          // 학생의 학번이나 관리자의 id
-    private String username;        // 학생이나 관리자의 이름
-    private String phonenumber;     // 전화번호
-    private String password;        // 관리자인 경우 비밀번호 사용
-    private String authority;       // 권한 STUDENT, STUDENT_ADMIN, ADMIN
+    @Column(name = "user_id")
+    private String id;
 
-    public User(
-            String id,
-            String username,
-            String phonenumber,
-            String password,
-            String authority
-    ) {
-        this.id = id;
-        this.username = username;
-        this.phonenumber = phonenumber;
-        this.password = password;
-        this.authority = authority;
-    }
+    private String name;
+
+    private String phoneNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "DORMITORY_ID")
+    private Dormitory dormitory;
+
+    private String detailedAddress;
+
+    private String authority;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -48,12 +43,12 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.password;
+        return null;
     }
 
     @Override
     public String getUsername() {
-        return this.username;
+        return this.id;
     }
 
     @Override
