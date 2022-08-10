@@ -15,4 +15,15 @@ public class UserService {
     private final UserRepository userRepo;
     private final LmpRepository lmpRepo;
 
+    public Boolean isResident(String userId) {
+        Optional<User> user = userRepo.findById(userId);
+
+        if (user.isEmpty() || !user.get().getAuthority().equals("ROLE_RESIDENT")) {
+            return false;
+        }
+
+        return true;
+
+    }
+
 }
