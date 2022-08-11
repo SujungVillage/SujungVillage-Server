@@ -10,6 +10,9 @@ import com.sswu_2022swcontest.sujungvillage.repository.qna.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class QnaService {
@@ -39,6 +42,16 @@ public class QnaService {
                     )
                 )
         );
+
+    }
+
+    // 모든 FAQ 조회
+    public List<FaqDTO> getAllFaq() {
+
+        return faqRepo.findAll().stream()
+                .map(faq -> {
+                    return FaqDTO.entityToDto(faq);
+                }).collect(Collectors.toList());
 
     }
 }
