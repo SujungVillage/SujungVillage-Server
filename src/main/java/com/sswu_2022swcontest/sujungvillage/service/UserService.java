@@ -26,4 +26,15 @@ public class UserService {
 
     }
 
+    public Boolean adminLogin(String id, String password){
+        Optional<User> user = userRepo.findById(id);
+
+        if (user.isEmpty() || !user.get().getPassword().equals(password)) {
+            return false;
+        }
+
+        return true;
+
+    }
+
 }

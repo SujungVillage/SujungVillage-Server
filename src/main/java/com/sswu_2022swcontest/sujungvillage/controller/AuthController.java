@@ -7,7 +7,9 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.sswu_2022swcontest.sujungvillage.config.PropertyConfig;
+import com.sswu_2022swcontest.sujungvillage.dto.request.login.AdminLoginRequest;
 import com.sswu_2022swcontest.sujungvillage.dto.request.login.StudentLoginRequest;
+import com.sswu_2022swcontest.sujungvillage.dto.response.login.AdminLoginResponse;
 import com.sswu_2022swcontest.sujungvillage.dto.response.login.StudentLoginResponse;
 import com.sswu_2022swcontest.sujungvillage.service.UserService;
 import io.jsonwebtoken.Jwts;
@@ -99,6 +101,44 @@ public class AuthController {
 
         // 응답 반환
         return new StudentLoginResponse(jwt);
+
+    }
+
+    @PostMapping("/api/admin/login")
+    public AdminLoginResponse adminLogin(
+            @RequestBody AdminLoginRequest body
+    ) throws GeneralSecurityException, IOException {
+
+        // TODO: id, password 보안적용하기
+
+        if (!userService.adminLogin(body.getId(), body.getPassword())) {
+            // TODO: 로그인에 실패했을 때 오류처리
+            return null;
+        }
+
+        // jwt 토큰 생성
+        Map<String, Object> jwtHeader = new HashMap<>();
+        jwtHeader.put("typ", "JWT");
+        jwtHeader.put("alg", "HS256");
+
+        Map<String, Object> jwtPayload = new HashMap<>();
+        jwtPayload.put("user_id", body.getId());
+
+        Long expiredTime = 1000 * 60L * 60L * 24L;
+        Date date = new Date();
+        date.setTime(date.getTime() + expiredTime);
+
+        Key key = Keys.hmacShaKeyFor(propertyConfig.getJwtKey().getBytes(StandardCharsets.UTF_8));
+
+        String jwt = Jwts.builder()
+                .setHeader(jwtHeader)
+                .setClaims(jwtPayload)
+                .setExpiration(date)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+
+        // 응답 반환
+        return new AdminLoginResponse(jwt);
 
     }
 
