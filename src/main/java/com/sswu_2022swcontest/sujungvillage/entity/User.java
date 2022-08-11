@@ -33,6 +33,8 @@ public class User implements UserDetails {
 
     private String detailedAddress;
 
+    private String password;
+
     private String authority;
 
 
@@ -43,7 +45,7 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
