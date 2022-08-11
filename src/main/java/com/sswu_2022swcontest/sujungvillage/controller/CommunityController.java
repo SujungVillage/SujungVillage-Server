@@ -50,4 +50,15 @@ public class CommunityController {
         return communityService.getPost(postId);
     }
 
+    @DeleteMapping("/api/common/community/deletePost")
+    public String deletePost(
+            @RequestParam Long postId
+    ){
+        if (communityService.deletePost(postId)) {
+            return "게시물 삭제 완료";
+        }
+
+        return "게시물 삭제 실패";
+    }
+
 }

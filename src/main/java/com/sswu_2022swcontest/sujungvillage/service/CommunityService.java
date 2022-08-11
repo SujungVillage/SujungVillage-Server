@@ -5,6 +5,7 @@ import com.sswu_2022swcontest.sujungvillage.dto.dto.community.DetailedPostDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.community.PostDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.community.SimplePostDTO;
 import com.sswu_2022swcontest.sujungvillage.entity.Dormitory;
+import com.sswu_2022swcontest.sujungvillage.entity.User;
 import com.sswu_2022swcontest.sujungvillage.entity.community.Comment;
 import com.sswu_2022swcontest.sujungvillage.entity.community.Post;
 import com.sswu_2022swcontest.sujungvillage.repository.DormitoryRepository;
@@ -13,6 +14,7 @@ import com.sswu_2022swcontest.sujungvillage.repository.community.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -112,4 +114,30 @@ public class CommunityService {
                     return CommentDTO.entityToDTO(c);
                 }).collect(Collectors.toList());
     }
+
+    // 게시물 삭제
+    @Transactional
+    public Boolean deletePost(Long postId) {
+
+        User user = userService.getUser();
+        Post post = postRepo.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다 postId="+postId));
+
+        if (!post.getWriter().getId().equals(user.getId())) {
+            return false;
+        }
+
+        this.deleteAllCommentByPostId(postId);
+        postRepo.deleteById(postId);
+
+        return true;
+
+    }
+
+    // 게시물의 모든 댓글 삭제
+    @Transactional
+    private void deleteAllCommentByPostId(Long postId) {
+        commentRepo.deleteAllByPostId(postId);
+    }
+
 }
