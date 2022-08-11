@@ -12,6 +12,7 @@ import com.sswu_2022swcontest.sujungvillage.repository.qna.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -145,6 +146,15 @@ public class QnaService {
         if (answer.isPresent()) result.setAnswer(AnswerDTO.entityToDTO(answer.get()));
 
         return result;
+
+    }
+
+    // 질문 삭제
+    @Transactional
+    public void deleteQuestion(Long questionId) {
+
+        ansRepo.deleteByQuestionId(questionId);
+        queRepo.deleteById(questionId);
 
     }
 }

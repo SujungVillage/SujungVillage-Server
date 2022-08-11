@@ -64,5 +64,15 @@ public class QnaController {
         return qnaService.getQna(questionId);
     }
 
+    @DeleteMapping("/api/common/qna/deleteQuestion")
+    public String deleteQuestion(
+            @RequestParam Long questionId
+    ){
+
+        qnaService.deleteQuestion(questionId);
+
+        return "질문삭제 성공";
+
+    }
 
 }
