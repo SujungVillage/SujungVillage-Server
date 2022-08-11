@@ -1,6 +1,8 @@
 package com.sswu_2022swcontest.sujungvillage.controller;
 
+import com.sswu_2022swcontest.sujungvillage.dto.dto.community.CommentDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.community.PostDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.request.community.WriteCommentRequest;
 import com.sswu_2022swcontest.sujungvillage.dto.request.community.WritePostRequest;
 import com.sswu_2022swcontest.sujungvillage.service.CommunityService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,14 @@ public class CommunityController {
             @RequestBody WritePostRequest body
     ){
         return communityService.writePost(body.getTitle(), body.getContent());
+    }
+
+    // 댓글 작성
+    @PostMapping("/api/common/community/writeComment")
+    public CommentDTO writeComment(
+            @RequestBody WriteCommentRequest body
+    ){
+        return communityService.writeComment(body.getPostId(), body.getContent());
     }
 
 }
