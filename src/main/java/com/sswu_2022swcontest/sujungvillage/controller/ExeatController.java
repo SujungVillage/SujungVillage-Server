@@ -4,9 +4,7 @@ import com.sswu_2022swcontest.sujungvillage.dto.dto.exeat.ExeatDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.request.exeat.ApplyExeatRequest;
 import com.sswu_2022swcontest.sujungvillage.service.ExeatService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -43,6 +41,11 @@ public class ExeatController {
 
     }
 
-
+    @GetMapping("/api/student/exeat/getAppliedExeat")
+    public ExeatDTO getAppliedExeat(
+            @RequestParam Long exeatId
+    ){
+        return exeatService.getExeat(exeatId);
+    }
 
 }

@@ -31,4 +31,12 @@ public class ExeatService {
                 )
         );
     }
+
+    // 외박신청 조회
+    public ExeatDTO getExeat(Long exeatId) {
+        return ExeatDTO.entityToDTO(
+                exeatRepo.findById(exeatId).orElseThrow(
+                        () -> new IllegalArgumentException("해당 exeat이 존재하지 않습니다. id="+exeatId))
+        );
+    }
 }
