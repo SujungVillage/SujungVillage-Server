@@ -1,5 +1,6 @@
 package com.sswu_2022swcontest.sujungvillage.service;
 
+import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.DetailedRollcallDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.RollcallDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.RollcallDateDTO;
 import com.sswu_2022swcontest.sujungvillage.entity.Dormitory;
@@ -13,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -85,5 +88,33 @@ public class RollcallService {
         }
 
         return null;
+    }
+
+    // 대기중인 점호 리스트 조회
+    public List<DetailedRollcallDTO> getWaitingRollcallList() {
+
+        Integer dormitoryId = userService.getUser().getDormitory().getId();
+
+        List<Rollcall> rollcalls = rollcallRepo.getWaitingRollcallsByDormitoryId(dormitoryId);
+
+        for(int i = 0; i < rollcalls.size(); i++){
+            System.out.println(rollcalls.get(i).getUser().getUsername()+" " + rollcalls.get(i).getRollcallTime());
+        }
+
+        return rollcallRepo.getWaitingRollcallsByDormitoryId(dormitoryId)
+                .stream()
+                .map(rollcall -> {
+                    return new DetailedRollcallDTO(
+                            rollcall.getId(),
+                            rollcall.getUser().getId(),
+                            rollcall.getUser().getName(),
+                            rollcall.getUser().getDormitory().getDormitoryName(),
+                            rollcall.getUser().getDetailedAddress(),
+                            rollcall.getImageURL(),
+                            rollcall.getLocation(),
+                            rollcall.getRollcallTime(),
+                            rollcall.getState()
+                    );
+                }).collect(Collectors.toList());
     }
 }

@@ -1,5 +1,6 @@
 package com.sswu_2022swcontest.sujungvillage.controller;
 
+import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.DetailedRollcallDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.RollcallDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.RollcallDateDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.request.rollcall.AddRollcallDateRequest;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -68,5 +70,12 @@ public class RollcallController {
     ){
         return rollcallService.getRollcallDto(rollcallId);
     }
+
+    @GetMapping("/api/admin/rollcall/getWaitingRollcallList")
+    public List<DetailedRollcallDTO> getWaitingRollcallList(){
+        return rollcallService.getWaitingRollcallList();
+    }
+
+
 
 }
