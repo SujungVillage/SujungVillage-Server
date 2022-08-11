@@ -58,4 +58,9 @@ public class QnaController {
         return qnaService.getMyQnas();
     }
 
+    @GetMapping("/api/admin/qna/getUnansweredQnas")
+    public List<SimpleQnaDTO> getUnansweredQnas(){
+        return qnaService.getUnansweredQnas();
+    }
+
 }

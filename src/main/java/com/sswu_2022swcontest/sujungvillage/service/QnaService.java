@@ -101,7 +101,7 @@ public class QnaService {
         return ansRepo.isAnswered(questionId) > 0;
     }
 
-    // 사용자의 QnN리스트 조회
+    // 사용자의 QnA리스트 조회
     public List<SimpleQnaDTO> getMyQnas() {
         return queRepo.findByWriterId(userService.getUser().getId())
                 .stream()
@@ -114,5 +114,22 @@ public class QnaService {
                     );
                 })
                 .collect(Collectors.toList());
+    }
+
+    // 아직 답변되지 않은 QnA리스트 조회
+    public List<SimpleQnaDTO> getUnansweredQnas() {
+
+        return queRepo.getUnansweredQuestion()
+                .stream()
+                .map(q -> {
+                    return new SimpleQnaDTO(
+                            q.getId(),
+                            q.getTitle(),
+                            q.getRegDate(),
+                            isAnswered(q.getId())
+                    );
+                })
+                .collect(Collectors.toList());
+
     }
 }
