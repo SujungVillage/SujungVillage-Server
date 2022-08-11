@@ -1,0 +1,35 @@
+package com.sswu_2022swcontest.sujungvillage.service;
+
+import com.sswu_2022swcontest.sujungvillage.dto.dto.resident.LmpDTO;
+import com.sswu_2022swcontest.sujungvillage.entity.User;
+import com.sswu_2022swcontest.sujungvillage.entity.home.LivingMannerPoint;
+import com.sswu_2022swcontest.sujungvillage.repository.UserRepository;
+import com.sswu_2022swcontest.sujungvillage.repository.home.LmpRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class LmpService {
+
+    private final LmpRepository lmpRepo;
+    private final UserRepository userRepo;
+
+    // 생활태도점수 부여
+    public LmpDTO addLmp(String residentId, Short score, String reason) {
+
+        User user = userRepo.findById(residentId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 재사생, residentId="+residentId));
+
+        return LmpDTO.entityToDTO(
+                lmpRepo.save(new LivingMannerPoint(
+                        null,
+                        user,
+                        score,
+                        reason,
+                        null
+                ))
+        );
+
+    }
+}
