@@ -4,9 +4,12 @@ import com.sswu_2022swcontest.sujungvillage.dto.dto.resident.LmpDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.request.exeat.AddLmpRequest;
 import com.sswu_2022swcontest.sujungvillage.service.LmpService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,5 +24,12 @@ public class LmpController {
     ){
         return lmpService.addLmp(body.getResidentId(), body.getScore(), body.getReason());
     }
+
+    // 생활태도점수 내역 조회
+    @GetMapping("/api/student/lmp/getLmpHistory")
+    public List<LmpDTO> getLmpHistory(){
+        return lmpService.getLmpHistory();
+    }
+
 
 }

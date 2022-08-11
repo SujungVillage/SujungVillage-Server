@@ -8,11 +8,15 @@ import com.sswu_2022swcontest.sujungvillage.repository.home.LmpRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class LmpService {
 
     private final LmpRepository lmpRepo;
+    private final UserService userService;
     private final UserRepository userRepo;
 
     // 생활태도점수 부여
@@ -30,6 +34,18 @@ public class LmpService {
                         null
                 ))
         );
+
+    }
+
+    // 생활태도점수 내역 조회
+    public List<LmpDTO> getLmpHistory() {
+
+        return lmpRepo.findAllByUserId(userService.getUser().getId())
+                .stream()
+                .map(lmp -> {
+                    return LmpDTO.entityToDTO(lmp);
+                })
+                .collect(Collectors.toList());
 
     }
 }
