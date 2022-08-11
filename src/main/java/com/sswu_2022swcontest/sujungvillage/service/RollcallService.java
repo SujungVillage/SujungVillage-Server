@@ -40,4 +40,14 @@ public class RollcallService {
 
     }
 
+    // 점호일 조회
+    public RollcallDateDTO getRollcallDate(Long rollcallDateId) {
+        Optional<RollcallDate> rcd = rollcallDateRepo.findById(rollcallDateId);
+
+        if (rcd.isPresent()) {
+            return RollcallDateDTO.entityToDTO(rcd.get());
+        }
+
+        return null;
+    }
 }

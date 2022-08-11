@@ -4,9 +4,7 @@ import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.RollcallDateDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.request.rollcall.AddRollcallDateRequest;
 import com.sswu_2022swcontest.sujungvillage.service.RollcallService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -42,6 +40,14 @@ public class RollcallController {
                 start,
                 end,
                 body.dormitoryName);
+    }
+
+    // 점호일 조회
+    @GetMapping("/api/common/rollcall/getRollcallDateInfo")
+    public RollcallDateDTO getRollcallDateInfo(
+            @RequestParam Long rollcallDateId
+    ){
+        return rollcallService.getRollcallDate(rollcallDateId);
     }
 
 }

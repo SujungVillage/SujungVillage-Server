@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 public class RollcallDateDTO {
 
     private Long id;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private LocalDateTime start;
+    private LocalDateTime end;
     private String dormitoryName;
 
     public static RollcallDateDTO entityToDTO(RollcallDate e){
