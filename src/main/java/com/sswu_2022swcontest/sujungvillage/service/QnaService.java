@@ -1,9 +1,6 @@
 package com.sswu_2022swcontest.sujungvillage.service;
 
-import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.AnswerDTO;
-import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.FaqDTO;
-import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.QuestionDTO;
-import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.SimpleQnaDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.*;
 import com.sswu_2022swcontest.sujungvillage.entity.Dormitory;
 import com.sswu_2022swcontest.sujungvillage.entity.qna.Answer;
 import com.sswu_2022swcontest.sujungvillage.entity.qna.Faq;
@@ -16,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -130,6 +128,23 @@ public class QnaService {
                     );
                 })
                 .collect(Collectors.toList());
+
+    }
+
+    // QnA 조회
+    public QnaDTO getQna(Long questionId) {
+
+        Question question = queRepo.findById(questionId)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 질문이 존재하지 않습니다. questionId="+questionId));
+
+        Optional<Answer> answer = ansRepo.findByQuestionId(questionId);
+
+        QnaDTO result = new QnaDTO();
+
+        result.setQuestion(QuestionDTO.entityToDTO(question));
+        if (answer.isPresent()) result.setAnswer(AnswerDTO.entityToDTO(answer.get()));
+
+        return result;
 
     }
 }

@@ -1,19 +1,13 @@
 package com.sswu_2022swcontest.sujungvillage.controller;
 
-import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.AnswerDTO;
-import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.FaqDTO;
-import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.QuestionDTO;
-import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.SimpleQnaDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.*;
 import com.sswu_2022swcontest.sujungvillage.dto.request.qna.WriteAnswerRequest;
 import com.sswu_2022swcontest.sujungvillage.dto.request.qna.WriteFaqRequest;
 import com.sswu_2022swcontest.sujungvillage.dto.request.qna.WriteQuestionRequest;
 import com.sswu_2022swcontest.sujungvillage.service.QnaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -62,5 +56,13 @@ public class QnaController {
     public List<SimpleQnaDTO> getUnansweredQnas(){
         return qnaService.getUnansweredQnas();
     }
+
+    @GetMapping("/api/common/qna/getQna")
+    public QnaDTO getQna(
+            @RequestParam Long questionId
+    ){
+        return qnaService.getQna(questionId);
+    }
+
 
 }
