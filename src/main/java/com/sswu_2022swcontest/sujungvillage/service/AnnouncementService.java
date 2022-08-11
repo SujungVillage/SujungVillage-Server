@@ -53,4 +53,14 @@ public class AnnouncementService {
                 }).collect(Collectors.toList());
 
     }
+
+    // 공지사항 상세조회
+    public AnnouncementDTO getAnnouncement(Long announcementId) {
+
+        Announcement announcement = annoRepo.findById(announcementId)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않는 공지사항 id, announcementId="+announcementId));
+
+        return AnnouncementDTO.entityToDTO(announcement);
+
+    }
 }

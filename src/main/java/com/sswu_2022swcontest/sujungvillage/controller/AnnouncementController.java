@@ -39,4 +39,12 @@ public class AnnouncementController {
 
     }
 
+    // 공지사항 상세조회
+    @GetMapping("/api/common/announcement/getAnnouncement")
+    public AnnouncementDTO getAnnouncement(
+            @RequestParam Long announcementId
+    ){
+        return announcementService.getAnnouncement(announcementId);
+    }
+
 }
