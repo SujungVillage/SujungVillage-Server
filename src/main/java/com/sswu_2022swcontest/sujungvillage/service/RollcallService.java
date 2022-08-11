@@ -13,6 +13,7 @@ import com.sswu_2022swcontest.sujungvillage.repository.home.RollcallRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,7 @@ public class RollcallService {
 
 
     // 점호일 추가
+    @Transactional
     public RollcallDateDTO addRollcallDate(LocalDateTime start, LocalDateTime end, String dormitoryName) {
 
         Optional<Dormitory> dormitory = dormitoryRepo.findByDormitoryName(dormitoryName);
@@ -60,6 +62,7 @@ public class RollcallService {
     }
 
     // 점호신청
+    @Transactional
     public RollcallDTO applyRollcall(String imageURL, String location) {
 
         User user = userService.getUser();
@@ -116,5 +119,16 @@ public class RollcallService {
                             rollcall.getState()
                     );
                 }).collect(Collectors.toList());
+    }
+
+    // 점호신청 상태 변경
+    @Transactional
+    public void changeRollcallState(Long rollcallId, String state) {
+
+        rollcallRepo.findById(rollcallId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 rollcall이 존재하지 않습니다. id="+rollcallId));
+
+        rollcallRepo.changeState(rollcallId, state);
+
     }
 }

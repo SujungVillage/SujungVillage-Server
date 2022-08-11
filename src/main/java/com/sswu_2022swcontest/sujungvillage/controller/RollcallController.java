@@ -76,6 +76,14 @@ public class RollcallController {
         return rollcallService.getWaitingRollcallList();
     }
 
+    @PatchMapping("/api/admin/rollcall/changeRollcallState")
+    public String changeRollcallState(
+            @RequestParam Long rollcallId,
+            @RequestParam String state
+    ){
+        rollcallService.changeRollcallState(rollcallId, state);
 
+        return "상태 변경 완료";
+    }
 
 }
