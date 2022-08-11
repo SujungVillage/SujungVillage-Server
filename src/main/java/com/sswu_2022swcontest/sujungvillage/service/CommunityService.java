@@ -1,6 +1,7 @@
 package com.sswu_2022swcontest.sujungvillage.service;
 
 import com.sswu_2022swcontest.sujungvillage.dto.dto.community.CommentDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.dto.community.DetailedPostDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.community.PostDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.community.SimplePostDTO;
 import com.sswu_2022swcontest.sujungvillage.entity.Dormitory;
@@ -89,5 +90,26 @@ public class CommunityService {
                     );
                 }).collect(Collectors.toList());
 
+    }
+
+    // 게시물 상세조회
+    public DetailedPostDTO getPost(Long postId) {
+
+        Post post = postRepo.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다 postId="+postId));
+
+        List<CommentDTO> comments = this.getComments(postId);
+
+        return DetailedPostDTO.entityToDTO(post, comments);
+
+    }
+
+    // 댓글 조회
+    private List<CommentDTO> getComments(Long postId) {
+        return commentRepo.findByPostId(postId)
+                .stream()
+                .map(c -> {
+                    return CommentDTO.entityToDTO(c);
+                }).collect(Collectors.toList());
     }
 }

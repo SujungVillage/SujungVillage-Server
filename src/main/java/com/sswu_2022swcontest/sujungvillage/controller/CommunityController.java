@@ -1,6 +1,7 @@
 package com.sswu_2022swcontest.sujungvillage.controller;
 
 import com.sswu_2022swcontest.sujungvillage.dto.dto.community.CommentDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.dto.community.DetailedPostDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.community.PostDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.community.SimplePostDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.request.community.WriteCommentRequest;
@@ -40,6 +41,13 @@ public class CommunityController {
             @RequestParam String dormitoryName
     ){
         return communityService.getAllPost(dormitoryName);
+    }
+
+    @GetMapping("/api/common/community/getPost")
+    public DetailedPostDTO getPost(
+            @RequestParam Long postId
+    ){
+        return communityService.getPost(postId);
     }
 
 }
