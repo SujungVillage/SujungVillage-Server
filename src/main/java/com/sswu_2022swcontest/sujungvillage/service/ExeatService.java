@@ -39,4 +39,9 @@ public class ExeatService {
                         () -> new IllegalArgumentException("해당 exeat이 존재하지 않습니다. id="+exeatId))
         );
     }
+
+    // 외박신청 취소
+    public void deleteExeat(Long exeatId) {
+        exeatRepo.deleteById(exeatId);
+    }
 }

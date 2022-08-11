@@ -48,4 +48,13 @@ public class ExeatController {
         return exeatService.getExeat(exeatId);
     }
 
+    @DeleteMapping("/api/student/exeat/cancelExeat")
+    public String cancelExeat(
+            @RequestParam Long exeatId
+    ){
+        exeatService.deleteExeat(exeatId);
+
+        return "외박신청 취소 완료";
+    }
+
 }
