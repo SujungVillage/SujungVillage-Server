@@ -61,4 +61,16 @@ public class CommunityController {
         return "게시물 삭제 실패";
     }
 
+
+
+    @DeleteMapping("/api/common/community/deleteComment")
+    public String deleteComment(
+            @RequestParam Long commentId
+    ){
+        if (communityService.deleteComment(commentId)) {
+            return "댓글 삭제 완료";
+        }
+
+        return "댓글 삭제 실패";
+    }
 }

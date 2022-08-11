@@ -140,4 +140,21 @@ public class CommunityService {
         commentRepo.deleteAllByPostId(postId);
     }
 
+    // 게시물 댓글 삭제
+    @Transactional
+    public Boolean deleteComment(Long commentId) {
+
+        User user = userService.getUser();
+        Comment comment = commentRepo.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 댓글이 존재하지 않습니다 commentId="+commentId));
+
+        if (!comment.getWriter().getId().equals(user.getId())) {
+            return false;
+        }
+
+        commentRepo.deleteById(commentId);
+
+        return true;
+
+    }
 }
