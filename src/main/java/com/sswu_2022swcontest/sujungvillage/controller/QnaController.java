@@ -3,6 +3,7 @@ package com.sswu_2022swcontest.sujungvillage.controller;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.AnswerDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.FaqDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.QuestionDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.SimpleQnaDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.request.qna.WriteAnswerRequest;
 import com.sswu_2022swcontest.sujungvillage.dto.request.qna.WriteFaqRequest;
 import com.sswu_2022swcontest.sujungvillage.dto.request.qna.WriteQuestionRequest;
@@ -50,6 +51,11 @@ public class QnaController {
             @RequestBody WriteAnswerRequest body
     ){
         return qnaService.writeAnswer(body.getQuestionId(), body.getContent());
+    }
+
+    @GetMapping("/api/student/qna/getMyQnas")
+    public List<SimpleQnaDTO> getMyQnas(){
+        return qnaService.getMyQnas();
     }
 
 }

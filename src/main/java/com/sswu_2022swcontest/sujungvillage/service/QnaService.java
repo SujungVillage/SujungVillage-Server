@@ -3,6 +3,7 @@ package com.sswu_2022swcontest.sujungvillage.service;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.AnswerDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.FaqDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.QuestionDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.SimpleQnaDTO;
 import com.sswu_2022swcontest.sujungvillage.entity.Dormitory;
 import com.sswu_2022swcontest.sujungvillage.entity.qna.Answer;
 import com.sswu_2022swcontest.sujungvillage.entity.qna.Faq;
@@ -93,5 +94,25 @@ public class QnaService {
                 ))
         );
 
+    }
+
+    // 답변 여부 반환
+    Boolean isAnswered(Long questionId){
+        return ansRepo.isAnswered(questionId) > 0;
+    }
+
+    // 사용자의 QnN리스트 조회
+    public List<SimpleQnaDTO> getMyQnas() {
+        return queRepo.findByWriterId(userService.getUser().getId())
+                .stream()
+                .map(q -> {
+                    return new SimpleQnaDTO(
+                        q.getId(),
+                        q.getTitle(),
+                        q.getRegDate(),
+                        isAnswered(q.getId())
+                    );
+                })
+                .collect(Collectors.toList());
     }
 }
