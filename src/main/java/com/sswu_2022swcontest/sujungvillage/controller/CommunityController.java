@@ -2,14 +2,15 @@ package com.sswu_2022swcontest.sujungvillage.controller;
 
 import com.sswu_2022swcontest.sujungvillage.dto.dto.community.CommentDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.community.PostDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.dto.community.SimplePostDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.request.community.WriteCommentRequest;
 import com.sswu_2022swcontest.sujungvillage.dto.request.community.WritePostRequest;
 import com.sswu_2022swcontest.sujungvillage.service.CommunityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +32,14 @@ public class CommunityController {
             @RequestBody WriteCommentRequest body
     ){
         return communityService.writeComment(body.getPostId(), body.getContent());
+    }
+
+    // 게시글 제목 리스트 조회
+    @GetMapping("/api/common/community/getAllPost")
+    public List<SimplePostDTO> getAllPost(
+            @RequestParam String dormitoryName
+    ){
+        return communityService.getAllPost(dormitoryName);
     }
 
 }
