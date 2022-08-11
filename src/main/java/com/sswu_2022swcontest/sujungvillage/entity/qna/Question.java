@@ -31,6 +31,8 @@ public class Question {
 
     private String content;
 
+    private Boolean anonymous;
+
     @CreatedDate
     private LocalDateTime regDate;
 

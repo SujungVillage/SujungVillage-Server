@@ -1,8 +1,10 @@
 package com.sswu_2022swcontest.sujungvillage.service;
 
 import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.FaqDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.QuestionDTO;
 import com.sswu_2022swcontest.sujungvillage.entity.Dormitory;
 import com.sswu_2022swcontest.sujungvillage.entity.qna.Faq;
+import com.sswu_2022swcontest.sujungvillage.entity.qna.Question;
 import com.sswu_2022swcontest.sujungvillage.repository.DormitoryRepository;
 import com.sswu_2022swcontest.sujungvillage.repository.qna.AnswerRepository;
 import com.sswu_2022swcontest.sujungvillage.repository.qna.FaqRepository;
@@ -54,4 +56,22 @@ public class QnaService {
                 }).collect(Collectors.toList());
 
     }
+
+    // 질문 작성
+    public QuestionDTO writeQuestion(String title, String content, Boolean anonymous) {
+
+        return QuestionDTO.entityToDTO(
+                queRepo.save(new Question(
+                        null,
+                        userService.getUser(),
+                        title,
+                        content,
+                        anonymous,
+                        null,
+                        null
+                ))
+        );
+
+    }
+
 }
