@@ -48,4 +48,19 @@ public class LmpService {
                 .collect(Collectors.toList());
 
     }
+
+    // 상벌점 조회
+    public int getLmp() {
+        return lmpRepo.getLmp(userService.getUser().getId());
+    }
+
+    // 상점 조회
+    public int getPlusLmp() {
+        return lmpRepo.getPlusLmp(userService.getUser().getId());
+    }
+
+    // 벌점 조회
+    public int getMinusLmp() {
+        return lmpRepo.getMinusLmp(userService.getUser().getId());
+    }
 }
