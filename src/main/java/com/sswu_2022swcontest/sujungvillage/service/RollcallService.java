@@ -75,4 +75,15 @@ public class RollcallService {
         );
 
     }
+
+    // 점호 조회
+    public RollcallDTO getRollcallDto(Long rollcallId) {
+        Optional<Rollcall> rollcall = rollcallRepo.findById(rollcallId);
+
+        if (rollcall.isPresent()) {
+            return RollcallDTO.entityToDTO(rollcall.get());
+        }
+
+        return null;
+    }
 }
