@@ -1,9 +1,13 @@
 package com.sswu_2022swcontest.sujungvillage.controller;
 
+import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.RollcallDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.RollcallDateDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.request.rollcall.AddRollcallDateRequest;
+import com.sswu_2022swcontest.sujungvillage.dto.request.rollcall.ApplyRollcallRequest;
+import com.sswu_2022swcontest.sujungvillage.entity.home.Rollcall;
 import com.sswu_2022swcontest.sujungvillage.service.RollcallService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -48,6 +52,14 @@ public class RollcallController {
             @RequestParam Long rollcallDateId
     ){
         return rollcallService.getRollcallDate(rollcallDateId);
+    }
+
+    // 점호 신청
+    @PostMapping("/api/student/rollcall/applyRollcall")
+    public RollcallDTO applyRollCall(
+            @RequestBody ApplyRollcallRequest body
+    ){
+        return rollcallService.applyRollcall(body.getImageURL(), body.getLocation());
     }
 
 }

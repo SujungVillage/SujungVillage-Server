@@ -1,7 +1,10 @@
 package com.sswu_2022swcontest.sujungvillage.service;
 
+import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.RollcallDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.RollcallDateDTO;
 import com.sswu_2022swcontest.sujungvillage.entity.Dormitory;
+import com.sswu_2022swcontest.sujungvillage.entity.User;
+import com.sswu_2022swcontest.sujungvillage.entity.home.Rollcall;
 import com.sswu_2022swcontest.sujungvillage.entity.home.RollcallDate;
 import com.sswu_2022swcontest.sujungvillage.repository.DormitoryRepository;
 import com.sswu_2022swcontest.sujungvillage.repository.home.RollcallDateRepository;
@@ -19,6 +22,8 @@ public class RollcallService {
     private final RollcallRepository rollcallRepo;
     private final RollcallDateRepository rollcallDateRepo;
     private final DormitoryRepository dormitoryRepo;
+    private final UserService userService;
+
 
     // 점호일 추가
     public RollcallDateDTO addRollcallDate(LocalDateTime start, LocalDateTime end, String dormitoryName) {
@@ -49,5 +54,25 @@ public class RollcallService {
         }
 
         return null;
+    }
+
+    // 점호신청
+    public RollcallDTO applyRollcall(String imageURL, String location) {
+
+        User user = userService.getUser();
+        if (user == null) return null;
+
+        // TODO: 점호 save하고 RollcallDTO 반환
+        return RollcallDTO.entityToDTO(
+                rollcallRepo.save(new Rollcall(
+                        null,
+                        user,
+                        imageURL,
+                        location,
+                        null,
+                        "대기"
+                ))
+        );
+
     }
 }
