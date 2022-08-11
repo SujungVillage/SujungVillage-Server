@@ -1,7 +1,9 @@
 package com.sswu_2022swcontest.sujungvillage.controller;
 
+import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.AnswerDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.FaqDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.QuestionDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.request.qna.WriteAnswerRequest;
 import com.sswu_2022swcontest.sujungvillage.dto.request.qna.WriteFaqRequest;
 import com.sswu_2022swcontest.sujungvillage.dto.request.qna.WriteQuestionRequest;
 import com.sswu_2022swcontest.sujungvillage.service.QnaService;
@@ -40,6 +42,14 @@ public class QnaController {
             @RequestBody WriteQuestionRequest body
     ){
         return qnaService.writeQuestion(body.getTitle(), body.getContent(), body.getAnonymous());
+    }
+
+    // 답변 작성
+    @PostMapping("/api/admin/qna/writeAnswer")
+    public AnswerDTO writeAnswer(
+            @RequestBody WriteAnswerRequest body
+    ){
+        return qnaService.writeAnswer(body.getQuestionId(), body.getContent());
     }
 
 }

@@ -1,8 +1,10 @@
 package com.sswu_2022swcontest.sujungvillage.service;
 
+import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.AnswerDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.FaqDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.qna.QuestionDTO;
 import com.sswu_2022swcontest.sujungvillage.entity.Dormitory;
+import com.sswu_2022swcontest.sujungvillage.entity.qna.Answer;
 import com.sswu_2022swcontest.sujungvillage.entity.qna.Faq;
 import com.sswu_2022swcontest.sujungvillage.entity.qna.Question;
 import com.sswu_2022swcontest.sujungvillage.repository.DormitoryRepository;
@@ -74,4 +76,22 @@ public class QnaService {
 
     }
 
+    // 답변 작성
+    public AnswerDTO writeAnswer(Long questionId, String content) {
+
+        Question question = queRepo.findById(questionId)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 질문이 존재하지 않습니다. questionId="+questionId));
+
+        return AnswerDTO.entityToDTO(
+                ansRepo.save(new Answer(
+                        null,
+                        userService.getUser(),
+                        question,
+                        content,
+                        null,
+                        null
+                ))
+        );
+
+    }
 }
