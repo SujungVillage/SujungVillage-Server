@@ -50,6 +50,15 @@ public class CommunityController {
         return communityService.getPost(postId);
     }
 
+    @GetMapping("/api/common/community/searchPost")
+    public List<SimplePostDTO> searchPost(
+            @RequestParam String dormitoryName,
+            @RequestParam String keyword
+    ){
+        return communityService.getSearchedPosts(dormitoryName, keyword);
+    }
+
+
     @DeleteMapping("/api/common/community/deletePost")
     public String deletePost(
             @RequestParam Long postId

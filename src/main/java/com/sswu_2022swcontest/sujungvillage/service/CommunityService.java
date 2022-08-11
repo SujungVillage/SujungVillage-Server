@@ -94,6 +94,36 @@ public class CommunityService {
 
     }
 
+    // 게시물 검색
+    public List<SimplePostDTO> getSearchedPosts(String dormitoryName, String keyword) {
+        Dormitory dormitory = dormitoryRepo.findByDormitoryName(dormitoryName)
+                .orElseThrow(() -> new IllegalArgumentException("해당 기숙사가 존재하지 않습니다 dormitoryName="+dormitoryName));
+
+        if (dormitory.getId() == 0) {
+            return postRepo.searchByKeyword(keyword)
+                    .stream()
+                    .map(p -> {
+                        return new SimplePostDTO(
+                                p.getId(),
+                                p.getTitle(),
+                                p.getContent(),
+                                p.getRegDate()
+                        );
+                    }).collect(Collectors.toList());
+        }
+
+        return postRepo.searchByKeywordAndDormitory(keyword, dormitory.getId())
+                .stream()
+                .map(p -> {
+                    return new SimplePostDTO(
+                            p.getId(),
+                            p.getTitle(),
+                            p.getContent(),
+                            p.getRegDate()
+                    );
+                }).collect(Collectors.toList());
+    }
+
     // 게시물 상세조회
     public DetailedPostDTO getPost(Long postId) {
 
@@ -136,7 +166,7 @@ public class CommunityService {
 
     // 게시물의 모든 댓글 삭제
     @Transactional
-    private void deleteAllCommentByPostId(Long postId) {
+    void deleteAllCommentByPostId(Long postId) {
         commentRepo.deleteAllByPostId(postId);
     }
 
@@ -157,4 +187,6 @@ public class CommunityService {
         return true;
 
     }
+
+
 }
