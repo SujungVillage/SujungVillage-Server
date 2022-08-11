@@ -1,8 +1,6 @@
 package com.sswu_2022swcontest.sujungvillage.service;
 
-import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.DetailedRollcallDTO;
-import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.RollcallDTO;
-import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.RollcallDateDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.*;
 import com.sswu_2022swcontest.sujungvillage.entity.Dormitory;
 import com.sswu_2022swcontest.sujungvillage.entity.User;
 import com.sswu_2022swcontest.sujungvillage.entity.home.Rollcall;
@@ -130,5 +128,29 @@ public class RollcallService {
 
         rollcallRepo.changeState(rollcallId, state);
 
+    }
+
+    // 점호일 조회
+    public List<RollcallDayDTO> getRollcallDays(int year, int month) {
+        return rollcallDateRepo.getRollCallDays(year, month, userService.getUser().getDormitory().getId())
+                .stream()
+                .map(rcd -> {
+                    return new RollcallDayDTO(
+                            rcd.getId(),
+                            rcd.getStartDateTime().getDayOfMonth()
+                    );
+                }).collect(Collectors.toList());
+
+    }
+
+    public List<AppliedRollcallDayDTO> getAppliedRolcallDays(int year, int month) {
+        return rollcallRepo.getAppliedRollcallDays(userService.getUser().getId(), year, month)
+                .stream()
+                .map(rc -> {
+                    return new AppliedRollcallDayDTO(
+                            rc.getId(),
+                            rc.getRollcallTime().getDayOfMonth()
+                    );
+                }).collect(Collectors.toList());
     }
 }

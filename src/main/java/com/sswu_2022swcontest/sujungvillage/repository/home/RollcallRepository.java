@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 public interface RollcallRepository extends JpaRepository<Rollcall, Long> {
 
@@ -20,5 +21,9 @@ public interface RollcallRepository extends JpaRepository<Rollcall, Long> {
     @Query(value = "UPDATE rollcall SET state = ?2 WHERE rollcall_id = ?1 ;"
             , nativeQuery = true)
     Integer changeState(Long rollcallId, String state);
+
+    @Query(value = " SELECT * FROM rollcall WHERE user_id = ?1 AND YEAR(rollcall_time) = ?2 AND MONTH(rollcall_time) = ?3 ; ",
+            nativeQuery = true)
+    List<Rollcall> getAppliedRollcallDays(String userId, int year, int month);
 
 }
