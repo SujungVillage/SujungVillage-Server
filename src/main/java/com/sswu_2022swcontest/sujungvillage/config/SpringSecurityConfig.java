@@ -1,81 +1,62 @@
 package com.sswu_2022swcontest.sujungvillage.config;
 
-import com.sswu_2022swcontest.sujungvillage.entity.User;
-import com.sswu_2022swcontest.sujungvillage.service.UserService;
+import com.sswu_2022swcontest.sujungvillage.filter.JwtAuthorizationFilter;
+import com.sswu_2022swcontest.sujungvillage.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
+    private final PropertyConfig propertyConfig;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // basic authentication
-        http.httpBasic().disable(); // basic authentication filter 비활성화
-        // csrf
+
+        // 필터 비활성화
+        http.httpBasic().disable();
         http.csrf().disable();
-        // remember-me
-        http.rememberMe();
-        // authorization
-        http.authorizeRequests()
-                // /와 /home은 모두에게 허용
-                .antMatchers("/", "/home", "/signup").permitAll()
-                // hello 페이지는 USER 롤을 가진 유저에게만 허용
-                .antMatchers("/note").hasRole("USER")
-                .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/notice").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/notice").hasRole("ADMIN")
-                .anyRequest().authenticated();
+        http.rememberMe().disable();
 
-        // login
-        http.formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/")
-                .permitAll(); // 모두 허용
+        // 비연결상태 설정
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        // logout
-        http.logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/");
+        // jwt 필터 추가
+        http.addFilterAfter(
+                new JwtAuthorizationFilter(userRepository, propertyConfig),
+                BasicAuthenticationFilter.class
+        );
+
+        // 접근권한 설정
+        http.authorizeRequests().antMatchers(
+                "/",
+                "/api/student/login",
+                "/api/admin/login").permitAll();
+
+        http.authorizeRequests().antMatchers(
+                "/api/common/**").hasAnyAuthority("RESIDENT", "ADMIN");
+
+        http.authorizeRequests().antMatchers(
+                "/api/resident/**").hasRole("RESIDENT");
+
+        http.authorizeRequests().antMatchers(
+                "/api/admin/**").hasRole("ADMIN");
+
     }
-
-
 
     @Override
     public void configure(WebSecurity web) {
-        // 정적 리소스 spring security 대상에서 제외
-//        web.ignoring().antMatchers("/images/**", "/css/**"); // 아래 코드와 같은 코드입니다.
         web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
-    /**
-     * UserDetailsService 구현
-     *
-     * @return UserDetailsService
-     */
-//    @Bean
-//    @Override
-//    public UserDetailsService userDetailsService() {
-//        return username -> {
-//            User user = userService
-//            if (user == null) {
-//                throw new UsernameNotFoundException(username);
-//            }
-//            return user;
-//        };
-//    }
 }
