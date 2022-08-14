@@ -26,26 +26,10 @@ public class RollcallController {
             @RequestBody AddRollcallDateRequest body
     ){
 
-        LocalDateTime start = LocalDateTime.of(
-                Integer.parseInt(body.date.substring(0, 4)),
-                Integer.parseInt(body.date.substring(5, 7)),
-                Integer.parseInt(body.date.substring(8)),
-                Integer.parseInt(body.startTime.substring(0, 2)),
-                Integer.parseInt(body.startTime.substring(3))
-        );
-
-        LocalDateTime end = LocalDateTime.of(
-                Integer.parseInt(body.date.substring(0, 4)),
-                Integer.parseInt(body.date.substring(5, 7)),
-                Integer.parseInt(body.date.substring(8)),
-                Integer.parseInt(body.endTime.substring(0, 2)),
-                Integer.parseInt(body.endTime.substring(3))
-        );
-
         return rollcallService.addRollcallDate(
-                start,
-                end,
-                body.dormitoryName);
+                body.getStartDateTime(),
+                body.getEndDateTime(),
+                body.getDormitoryName());
     }
 
     // 점호일 조회
