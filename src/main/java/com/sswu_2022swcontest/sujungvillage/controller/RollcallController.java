@@ -63,7 +63,7 @@ public class RollcallController {
     public RollcallDTO applyRollCall(
             @RequestBody ApplyRollcallRequest body
     ){
-        return rollcallService.applyRollcall(body.getImageURL(), body.getLocation());
+        return rollcallService.applyRollcall(body.getImage(), body.getLocation());
     }
 
     @GetMapping("/api/common/rollcall/getAppliedRollcallInfo")

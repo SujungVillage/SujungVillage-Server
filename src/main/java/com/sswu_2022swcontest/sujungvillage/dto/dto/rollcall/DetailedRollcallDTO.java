@@ -17,7 +17,7 @@ public class DetailedRollcallDTO {
     private String userName;
     private String dormitoryName;
     private String detailedAddress;
-    private String imageURL;
+    private Byte[] image;
     private String location;
     private LocalDateTime rollcallDateTime;
     private String state;
@@ -29,7 +29,7 @@ public class DetailedRollcallDTO {
                 e.getUser().getName(),
                 e.getUser().getDormitory().getDormitoryName(),
                 e.getUser().getDetailedAddress(),
-                e.getImageURL(),
+                e.getImage(),
                 e.getLocation(),
                 e.getRollcallTime(),
                 e.getState()

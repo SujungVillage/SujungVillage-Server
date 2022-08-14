@@ -28,13 +28,13 @@ public interface RollcallRepository extends JpaRepository<Rollcall, Long> {
             nativeQuery = true)
     List<Rollcall> getAppliedRollcallDays(String userId, int year, int month);
 
-    @Query(value = " SELECT rollcall_id, imageurl, location, rollcall_time, state, rollcall.user_id FROM rollcall " +
+    @Query(value = " SELECT rollcall_id, image, location, rollcall_time, state, rollcall.user_id FROM rollcall " +
             "LEFT JOIN users ON rollcall.user_id=users.user_id " +
             "WHERE DATE(rollcall_time) = ?1 AND users.dormitory_id = ?2 ; ",
             nativeQuery = true)
     List<Rollcall> getAllRollcallsByDate(LocalDate date, Integer dormitoryId);
 
-    @Query(value = " SELECT rollcall_id, imageurl, location, rollcall_time, state, rollcall.user_id FROM rollcall " +
+    @Query(value = " SELECT rollcall_id, image, location, rollcall_time, state, rollcall.user_id FROM rollcall " +
             "LEFT JOIN users ON rollcall.user_id=users.user_id " +
             "WHERE DATE(rollcall_time) = ?1 AND users.dormitory_id = ?2 AND rollcall.state = ?3 ; ",
             nativeQuery = true)

@@ -14,7 +14,7 @@ public class RollcallDTO {
 
     private Long id;
     private String userId;
-    private String imageURL;
+    private Byte[] image;
     private String location;
     private LocalDateTime rollcallDateTime;
     private String state;
@@ -23,7 +23,7 @@ public class RollcallDTO {
         return new RollcallDTO(
                 e.getId(),
                 e.getUser().getId(),
-                e.getImageURL(),
+                e.getImage(),
                 e.getLocation(),
                 e.getRollcallTime(),
                 e.getState()

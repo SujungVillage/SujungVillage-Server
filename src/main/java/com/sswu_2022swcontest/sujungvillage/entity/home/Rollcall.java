@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.sql.Blob;
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,8 +27,9 @@ public class Rollcall {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @Column(length = 20000)
-    private String imageURL;        // 앱에서 s3서버에 업로한 url
+    @Lob
+    @Column(columnDefinition="BLOB")
+    private Byte[] image;
 
     private String location;        // 점호당시 위치
 

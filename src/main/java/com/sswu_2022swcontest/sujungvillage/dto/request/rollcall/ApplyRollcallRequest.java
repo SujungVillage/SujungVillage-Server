@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class ApplyRollcallRequest {
 
-    private String imageURL;
+    private Byte[] image;
     private String location;
 
 }

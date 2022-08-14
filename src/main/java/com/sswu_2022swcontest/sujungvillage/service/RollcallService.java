@@ -62,7 +62,7 @@ public class RollcallService {
 
     // 점호신청
     @Transactional
-    public RollcallDTO applyRollcall(String imageURL, String location) {
+    public RollcallDTO applyRollcall(Byte[] image, String location) {
 
         User user = userService.getUser();
         if (user == null) return null;
@@ -72,7 +72,7 @@ public class RollcallService {
                 rollcallRepo.save(new Rollcall(
                         null,
                         user,
-                        imageURL,
+                        image,
                         location,
                         null,
                         "대기"
@@ -112,7 +112,7 @@ public class RollcallService {
                             rollcall.getUser().getName(),
                             rollcall.getUser().getDormitory().getDormitoryName(),
                             rollcall.getUser().getDetailedAddress(),
-                            rollcall.getImageURL(),
+                            rollcall.getImage(),
                             rollcall.getLocation(),
                             rollcall.getRollcallTime(),
                             rollcall.getState()
