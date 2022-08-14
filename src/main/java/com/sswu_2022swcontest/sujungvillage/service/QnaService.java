@@ -52,7 +52,7 @@ public class QnaService {
     // 모든 FAQ 조회
     public List<FaqDTO> getAllFaq() {
 
-        return faqRepo.findAll().stream()
+        return faqRepo.getAllFaq().stream()
                 .map(faq -> {
                     return FaqDTO.entityToDto(faq);
                 }).collect(Collectors.toList());
@@ -113,6 +113,22 @@ public class QnaService {
                     );
                 })
                 .collect(Collectors.toList());
+    }
+
+    public List<SimpleQnaDTO> getAllQuestions(){
+
+        return queRepo.getAllQuestions()
+                .stream()
+                .map(q -> {
+                    return new SimpleQnaDTO(
+                            q.getId(),
+                            q.getTitle(),
+                            q.getRegDate(),
+                            isAnswered(q.getId())
+                    );
+                })
+                .collect(Collectors.toList());
+
     }
 
     // 아직 답변되지 않은 QnA리스트 조회

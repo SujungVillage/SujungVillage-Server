@@ -57,6 +57,11 @@ public class QnaController {
         return qnaService.getUnansweredQnas();
     }
 
+    @GetMapping("/api/admin/qna/getAllQuestions")
+    public List<SimpleQnaDTO> getAllQuestions(){
+        return qnaService.getAllQuestions();
+    }
+
     @GetMapping("/api/common/qna/getQna")
     public QnaDTO getQna(
             @RequestParam Long questionId

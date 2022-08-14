@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
@@ -21,4 +22,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             "WHERE answer_id IS NULL; "
         ,nativeQuery = true)
     List<Question> getUnansweredQuestion();
+
+    @Query(value = "SELECT * from question order by reg_date desc ;"
+            , nativeQuery = true)
+    List<Question> getAllQuestions();
 }
