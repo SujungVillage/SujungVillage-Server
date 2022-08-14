@@ -57,4 +57,9 @@ public class ExeatController {
         return "외박신청 취소 완료";
     }
 
+    @GetMapping("/api/student/exeat/numOfExeats")
+    public Integer numOfExeats(){
+        return exeatService.numOfExeats();
+    }
+
 }

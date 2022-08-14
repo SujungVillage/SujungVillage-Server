@@ -62,4 +62,8 @@ public class ExeatService {
                 }).collect(Collectors.toList());
 
     }
+
+    public Integer numOfExeats() {
+        return exeatRepo.numOfExeats(userService.getUser().getId());
+    }
 }

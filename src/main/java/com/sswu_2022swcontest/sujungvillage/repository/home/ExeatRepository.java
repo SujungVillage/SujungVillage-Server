@@ -13,4 +13,9 @@ public interface ExeatRepository extends JpaRepository<Exeat, Long> {
     @Query(value = " SELECT * FROM exeat WHERE user_id = ?1 AND YEAR(date_to_use) = ?2 AND MONTH(date_to_use) = ?3 ; ",
             nativeQuery = true)
     List<Exeat> getAppliedExeatlDays(String userId, int year, int month);
+
+    @Query(value = " SELECT COUNT(exeat_id) FROM exeat " +
+            "WHERE user_id = ?1 AND YEAR(date_to_use) = YEAR(NOW()) AND MONTH(date_to_use) = MONTH(NOW()) ; ",
+            nativeQuery = true)
+    Integer numOfExeats(String id);
 }
