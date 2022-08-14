@@ -12,4 +12,8 @@ public interface RollcallDateRepository extends JpaRepository<RollcallDate, Long
             "WHERE YEAR(start_date_time) = ?1 AND MONTH(start_date_time) = ?2 AND (dormitory_id = 0 OR dormitory_id = ?3 ); ",
             nativeQuery = true)
     List<RollcallDate> getRollCallDays(int year, int month, Integer dormitoryId);
+
+    @Query(value="SELECT * FROM rollcall_date WHERE (DATE(start_date_time) = DATE(now()) OR DATE(end_date_time) = DATE(now())) AND (dormitory_id = 0 OR dormitory_id = ?1 ) limit 1 ; "
+            , nativeQuery = true)
+    RollcallDate getTodayRollcall(Integer dormitoryId);
 }

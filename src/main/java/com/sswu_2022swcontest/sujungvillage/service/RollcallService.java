@@ -153,4 +153,17 @@ public class RollcallService {
                     );
                 }).collect(Collectors.toList());
     }
+
+    public Boolean isRollcallAvailableNow() {
+        Integer dormitoryId = userService.getUser().getDormitory().getId();
+
+        RollcallDate rollcallDate = rollcallDateRepo.getTodayRollcall(dormitoryId);
+
+        if (rollcallDate != null) {
+            return (LocalDateTime.now().isAfter(rollcallDate.getStartDateTime()) &&
+                    LocalDateTime.now().isBefore(rollcallDate.getEndDateTime()));
+        }
+
+        return false;
+    }
 }

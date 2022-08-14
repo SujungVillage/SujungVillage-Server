@@ -40,6 +40,13 @@ public class RollcallController {
         return rollcallService.getRollcallDate(rollcallDateId);
     }
 
+    // 현재 점호 가능 여부 조회
+    @GetMapping("/api/common/rollcall/isRollcallAvailableNow")
+    public Boolean isRollcallAvailableNow(){
+        return rollcallService.isRollcallAvailableNow();
+    }
+
+
     // 점호 신청
     @PostMapping("/api/student/rollcall/applyRollcall")
     public RollcallDTO applyRollCall(
