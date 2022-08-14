@@ -1,11 +1,13 @@
 package com.sswu_2022swcontest.sujungvillage.repository.home;
 
+import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.DetailedRollcallDTO;
 import com.sswu_2022swcontest.sujungvillage.entity.home.Rollcall;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,4 +28,15 @@ public interface RollcallRepository extends JpaRepository<Rollcall, Long> {
             nativeQuery = true)
     List<Rollcall> getAppliedRollcallDays(String userId, int year, int month);
 
+    @Query(value = " SELECT rollcall_id, imageurl, location, rollcall_time, state, rollcall.user_id FROM rollcall " +
+            "LEFT JOIN users ON rollcall.user_id=users.user_id " +
+            "WHERE DATE(rollcall_time) = ?1 AND users.dormitory_id = ?2 ; ",
+            nativeQuery = true)
+    List<Rollcall> getAllRollcallsByDate(LocalDate date, Integer dormitoryId);
+
+    @Query(value = " SELECT rollcall_id, imageurl, location, rollcall_time, state, rollcall.user_id FROM rollcall " +
+            "LEFT JOIN users ON rollcall.user_id=users.user_id " +
+            "WHERE DATE(rollcall_time) = ?1 AND users.dormitory_id = ?2 AND rollcall.state = ?3 ; ",
+            nativeQuery = true)
+    List<Rollcall> getAllRollcallsByDateAndState(LocalDate date, Integer dormitoryId, String state);
 }

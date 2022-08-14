@@ -73,6 +73,15 @@ public class RollcallController {
         return rollcallService.getRollcallDto(rollcallId);
     }
 
+    @GetMapping("/api/admin/rollcall/getRollcallList")
+    public List<DetailedRollcallDTO> getRollcallList(
+            @RequestParam String date,
+            @RequestParam String state
+    ){
+        LocalDate localDate = LocalDate.parse(date);
+
+        return rollcallService.getRollcallListByState(localDate, state);
+    }
 
     @PatchMapping("/api/admin/rollcall/changeRollcallState")
     public String changeRollcallState(

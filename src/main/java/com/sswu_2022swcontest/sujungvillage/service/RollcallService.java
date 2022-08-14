@@ -178,5 +178,20 @@ public class RollcallService {
         rollcallDateRepo.deleteById(rollcallDateId);
     }
 
-    
+    public List<DetailedRollcallDTO> getRollcallListByState(LocalDate date, String state) {
+
+        Integer dormitoryId = userService.getUser().getDormitory().getId();
+
+        if (state.equals("전체")) {
+            return rollcallRepo.getAllRollcallsByDate(date, dormitoryId)
+                    .stream().map(rc -> {
+                        return DetailedRollcallDTO.entityToDTO(rc);
+                    }).collect(Collectors.toList());
+        }
+
+        return rollcallRepo.getAllRollcallsByDateAndState(date, dormitoryId, state)
+                .stream().map(rc -> {
+                    return DetailedRollcallDTO.entityToDTO(rc);
+                }).collect(Collectors.toList());
+    }
 }
