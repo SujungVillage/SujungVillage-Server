@@ -10,4 +10,6 @@ public class StudentLoginRequest {
 
     private String access_token;
 
+    private String fcm_token;
+
 }

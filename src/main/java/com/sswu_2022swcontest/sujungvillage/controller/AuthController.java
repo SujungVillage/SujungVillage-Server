@@ -22,10 +22,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.Key;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,7 +42,13 @@ public class AuthController {
 
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier
                 .Builder(transport, jsonFactory)
-                .setAudience(Collections.singletonList(propertyConfig.getGoogleClientId()))
+                .setAudience(Arrays.asList(
+                        propertyConfig.getGoogleClientId1(),
+                        propertyConfig.getGoogleClientId2(),
+                        propertyConfig.getGoogleClientId3(),
+                        propertyConfig.getGoogleClientId4(),
+                        propertyConfig.getGoogleClientId5()
+                ))
                 .build();
 
         GoogleIdToken idToken = verifier.verify(body.getAccess_token());
@@ -77,6 +80,11 @@ public class AuthController {
 //            return null;
 //        }
         // 구글 access token이 없을 때 jwt토큰을 얻기위한 임시코드코드 끝
+
+        // fcm 토큰 설정하기
+        if(body.getFcm_token() != null){
+            userService.setFcmToken(userId, body.getFcm_token());
+        }
 
         // jwt 토큰 생성
         Map<String, Object> jwtHeader = new HashMap<>();
@@ -116,6 +124,10 @@ public class AuthController {
             return null;
         }
 
+        if(body.getFcm_token() != null){
+            userService.setFcmToken(body.getId(), body.getFcm_token());
+        }
+
         // jwt 토큰 생성
         Map<String, Object> jwtHeader = new HashMap<>();
         jwtHeader.put("typ", "JWT");
@@ -140,6 +152,11 @@ public class AuthController {
         // 응답 반환
         return new AdminLoginResponse(jwt);
 
+    }
+
+    @GetMapping("/api/common/getFcmToken")
+    public String getFcmToken(){
+        return userService.getFcmToken();
     }
 
 }

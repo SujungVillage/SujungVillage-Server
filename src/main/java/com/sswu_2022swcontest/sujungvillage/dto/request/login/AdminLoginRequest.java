@@ -9,5 +9,6 @@ public class AdminLoginRequest {
 
     private String id;
     private String password;
+    private String fcm_token;
 
 }
