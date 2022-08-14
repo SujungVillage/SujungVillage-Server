@@ -14,12 +14,14 @@ public class SimpleAnnouncementDTO {
 
     private Long id;
     private String title;
+    private String dormitoryName;
     private LocalDateTime regDate;
 
     public static SimpleAnnouncementDTO entityToDTO(Announcement e){
         return new SimpleAnnouncementDTO(
                 e.getId(),
                 e.getTitle(),
+                e.getDormitory().getDormitoryName(),
                 e.getRegDate()
         );
     }

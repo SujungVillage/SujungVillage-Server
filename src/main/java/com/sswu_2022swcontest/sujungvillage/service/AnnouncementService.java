@@ -46,7 +46,15 @@ public class AnnouncementService {
         Dormitory dormitory = dormitoryRepo.findByDormitoryName(dormitoryName)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기숙사명, 기숙사명="+dormitoryName));
 
-        return annoRepo.findAllByDormitoryId(dormitory.getId())
+        if (dormitoryName.equals("전체")) {
+            return annoRepo.getAllAnnouncement()
+                    .stream()
+                    .map(anno -> {
+                        return SimpleAnnouncementDTO.entityToDTO(anno);
+                    }).collect(Collectors.toList());
+        }
+
+        return annoRepo.getAllAnnouncementByDormitoryId(dormitory.getId())
                 .stream()
                 .map(anno -> {
                     return SimpleAnnouncementDTO.entityToDTO(anno);
