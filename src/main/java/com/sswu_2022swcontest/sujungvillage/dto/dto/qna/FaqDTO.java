@@ -14,6 +14,7 @@ public class FaqDTO {
     private String writerId;
     private String question;
     private String answer;
+    private String dormitoryName;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
 
@@ -23,6 +24,7 @@ public class FaqDTO {
                 faq.getWriter().getId(),
                 faq.getQuestion(),
                 faq.getAnswer(),
+                faq.getDormitory().getDormitoryName(),
                 faq.getRegDate(),
                 faq.getModDate()
         );
