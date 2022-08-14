@@ -118,7 +118,7 @@ public class CommunityService {
 
     // 댓글 조회
     private List<CommentDTO> getComments(Long postId) {
-        return commentRepo.findByPostId(postId)
+        return commentRepo.getCommentsByPostId(postId)
                 .stream()
                 .map(c -> {
                     return CommentDTO.entityToDTO(c);

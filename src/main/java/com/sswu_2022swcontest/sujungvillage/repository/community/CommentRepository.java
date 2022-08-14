@@ -5,6 +5,7 @@ import com.sswu_2022swcontest.sujungvillage.entity.community.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Arrays;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
@@ -16,4 +17,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "WHERE post_id = ?1 ;"
         , nativeQuery = true)
     int getNumOfComments(Long postId);
+
+    @Query(value = "SELECT * FROM comment " +
+            "WHERE post_id = ?1 ORDER BY reg_date ;"
+            , nativeQuery = true)
+    List<Comment> getCommentsByPostId(Long postId);
 }
