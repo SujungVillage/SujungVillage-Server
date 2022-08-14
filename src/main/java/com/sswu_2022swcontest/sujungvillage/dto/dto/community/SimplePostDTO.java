@@ -13,14 +13,18 @@ public class SimplePostDTO {
     private Long id;
     private String title;
     private String content;
+    private String writerId;
     private LocalDateTime regDate;
+    private Integer numOfComments;
 
-    public static SimplePostDTO entityToDTO(Post e){
+    public static SimplePostDTO entityToDTO(Post e, Integer numOfComments){
         return new SimplePostDTO(
                 e.getId(),
                 e.getTitle(),
                 e.getContent(),
-                e.getRegDate()
+                e.getWriter().getId(),
+                e.getRegDate(),
+                numOfComments
         );
     }
 }

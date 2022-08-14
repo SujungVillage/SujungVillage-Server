@@ -72,24 +72,14 @@ public class CommunityService {
             return postRepo.findAll()
                     .stream()
                     .map(p -> {
-                        return new SimplePostDTO(
-                                p.getId(),
-                                p.getTitle(),
-                                p.getContent(),
-                                p.getRegDate()
-                        );
+                        return SimplePostDTO.entityToDTO(p, this.getNumOfComment(p.getId()));
                     }).collect(Collectors.toList());
         }
 
         return postRepo.findAllByDormityId(dormitory.getId())
                 .stream()
                 .map(p -> {
-                    return new SimplePostDTO(
-                            p.getId(),
-                            p.getTitle(),
-                            p.getContent(),
-                            p.getRegDate()
-                    );
+                    return SimplePostDTO.entityToDTO(p, this.getNumOfComment(p.getId()));
                 }).collect(Collectors.toList());
 
     }
@@ -103,24 +93,14 @@ public class CommunityService {
             return postRepo.searchByKeyword(keyword)
                     .stream()
                     .map(p -> {
-                        return new SimplePostDTO(
-                                p.getId(),
-                                p.getTitle(),
-                                p.getContent(),
-                                p.getRegDate()
-                        );
+                        return SimplePostDTO.entityToDTO(p, this.getNumOfComment(p.getId()));
                     }).collect(Collectors.toList());
         }
 
         return postRepo.searchByKeywordAndDormitory(keyword, dormitory.getId())
                 .stream()
                 .map(p -> {
-                    return new SimplePostDTO(
-                            p.getId(),
-                            p.getTitle(),
-                            p.getContent(),
-                            p.getRegDate()
-                    );
+                    return SimplePostDTO.entityToDTO(p, this.getNumOfComment(p.getId()));
                 }).collect(Collectors.toList());
     }
 
@@ -186,6 +166,10 @@ public class CommunityService {
 
         return true;
 
+    }
+
+    int getNumOfComment(Long postId){
+        return commentRepo.getNumOfComments(postId);
     }
 
 
