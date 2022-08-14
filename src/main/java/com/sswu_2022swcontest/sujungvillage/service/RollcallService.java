@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -166,4 +167,16 @@ public class RollcallService {
 
         return false;
     }
+
+    // 점호일 삭제
+    @Transactional
+    public void deleteRollcallDate(Long rollcallDateId) {
+
+        RollcallDate rcd = rollcallDateRepo.findById(rollcallDateId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 점호일이 존재하지 않습니다. rollcallDateId="+rollcallDateId));
+
+        rollcallDateRepo.deleteById(rollcallDateId);
+    }
+
+    
 }

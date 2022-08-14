@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,6 +47,16 @@ public class RollcallController {
         return rollcallService.isRollcallAvailableNow();
     }
 
+    // 점호일 삭제
+    @DeleteMapping("/api/admin/rollcall/deleteRollcallDate")
+    public String deleteRollcallDate(
+            @RequestParam Long rollcallDateId
+    ){
+        rollcallService.deleteRollcallDate(rollcallDateId);
+
+        return "점호일 삭제 완료";
+    }
+
 
     // 점호 신청
     @PostMapping("/api/student/rollcall/applyRollcall")
@@ -62,10 +73,6 @@ public class RollcallController {
         return rollcallService.getRollcallDto(rollcallId);
     }
 
-    @GetMapping("/api/admin/rollcall/getWaitingRollcallList")
-    public List<DetailedRollcallDTO> getWaitingRollcallList(){
-        return rollcallService.getWaitingRollcallList();
-    }
 
     @PatchMapping("/api/admin/rollcall/changeRollcallState")
     public String changeRollcallState(
