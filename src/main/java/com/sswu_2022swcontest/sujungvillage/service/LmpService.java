@@ -18,12 +18,20 @@ public class LmpService {
     private final LmpRepository lmpRepo;
     private final UserService userService;
     private final UserRepository userRepo;
+    private final FcmService fcmService;
 
     // 생활태도점수 부여
     public LmpDTO addLmp(String residentId, Short score, String reason) {
 
         User user = userRepo.findById(residentId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 재사생, residentId="+residentId));
+
+        // 알람 보내기
+        fcmService.sendMessageTo(
+                fcmService.getDeviceToken(user.getId()),
+                "생활태도점수가 부여되었습니다.",
+                "점수 : "+score.toString()+", 사유 : "+reason
+        );
 
         return LmpDTO.entityToDTO(
                 lmpRepo.save(new LivingMannerPoint(
