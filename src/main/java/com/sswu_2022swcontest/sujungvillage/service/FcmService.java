@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.fcm.FcmMessage;
+import com.sswu_2022swcontest.sujungvillage.repository.FcmRepository;
 import lombok.RequiredArgsConstructor;
 import okhttp3.*;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,7 @@ public class FcmService {
 
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/sujungvillage-1660023039079/messages:send";
     private final ObjectMapper objectMapper;
+    private final FcmRepository fcmRepo;
 
     // message 생성
     private String makeMessage(
@@ -79,5 +81,12 @@ public class FcmService {
 
         return googleCredentials.getAccessToken().getTokenValue();
 
+    }
+
+    // user의 device 토큰 반환
+    public String getDeviceToken(String userId){
+        return fcmRepo.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다 userId="+userId))
+                .getFcmToken();
     }
 }
