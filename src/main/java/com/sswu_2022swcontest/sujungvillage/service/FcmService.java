@@ -8,6 +8,7 @@ import com.sswu_2022swcontest.sujungvillage.dto.dto.fcm.FcmMessage;
 import com.sswu_2022swcontest.sujungvillage.repository.FcmRepository;
 import lombok.RequiredArgsConstructor;
 import okhttp3.*;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
@@ -74,7 +75,9 @@ public class FcmService {
     private String getAccessToken() throws IOException {
 
         GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(new FileInputStream("/Users/kimyoojin/Desktop/sujungvillage/src/main/resources/firebase/firebase_service_key.json"))
+                .fromStream(
+                        new ClassPathResource("firebase/firebase_service_key.json").getInputStream()
+                )
                 .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
 
         googleCredentials.refreshIfExpired();
