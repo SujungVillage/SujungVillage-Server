@@ -102,24 +102,18 @@ public class RollcallService {
 
         List<Rollcall> rollcalls = rollcallRepo.getWaitingRollcallsByDormitoryId(dormitoryId);
 
-        for(int i = 0; i < rollcalls.size(); i++){
-            System.out.println(rollcalls.get(i).getUser().getUsername()+" " + rollcalls.get(i).getRollcallTime());
+        if (dormitoryId == 0) {
+            return rollcallRepo.getWaitingRollcalls()
+                    .stream()
+                    .map(rollcall -> {
+                        return DetailedRollcallDTO.entityToDTO(rollcall);
+                    }).collect(Collectors.toList());
         }
 
         return rollcallRepo.getWaitingRollcallsByDormitoryId(dormitoryId)
                 .stream()
                 .map(rollcall -> {
-                    return new DetailedRollcallDTO(
-                            rollcall.getId(),
-                            rollcall.getUser().getId(),
-                            rollcall.getUser().getName(),
-                            rollcall.getUser().getDormitory().getDormitoryName(),
-                            rollcall.getUser().getDetailedAddress(),
-                            rollcall.getImage(),
-                            rollcall.getLocation(),
-                            rollcall.getRollcallTime(),
-                            rollcall.getState()
-                    );
+                    return DetailedRollcallDTO.entityToDTO(rollcall);
                 }).collect(Collectors.toList());
     }
 

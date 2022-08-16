@@ -13,7 +13,12 @@ import java.util.Optional;
 
 public interface RollcallRepository extends JpaRepository<Rollcall, Long> {
 
-    @Query(value = "select rollcall_id, imageurl, location, rollcall_time, rollcall.state, rollcall.user_id from rollcall " +
+    @Query(value = "select rollcall_id, image, location, rollcall_time, rollcall.state, rollcall.user_id from rollcall " +
+            "left join users on rollcall.user_id=users.user_id where rollcall.state = '대기' ;"
+            , nativeQuery = true)
+    List<Rollcall> getWaitingRollcalls();
+
+    @Query(value = "select rollcall_id, image, location, rollcall_time, rollcall.state, rollcall.user_id from rollcall " +
             "left join users on rollcall.user_id=users.user_id where rollcall.state = '대기' AND users.dormitory_id = ?1 ;"
             , nativeQuery = true)
     List<Rollcall> getWaitingRollcallsByDormitoryId(Integer dormitoryId);

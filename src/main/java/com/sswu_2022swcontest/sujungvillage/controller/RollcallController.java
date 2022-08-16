@@ -84,6 +84,11 @@ public class RollcallController {
         return rollcallService.getRollcallListByState(localDate, state);
     }
 
+    @GetMapping("/api/admin/rollcall/getWaitingRollcallList")
+    public List<DetailedRollcallDTO> getWaitingRollcallList(){
+        return rollcallService.getWaitingRollcallList();
+    }
+
     @PatchMapping("/api/admin/rollcall/changeRollcallState")
     public String changeRollcallState(
             @RequestBody ChangeRollcallStateRequest body
