@@ -5,6 +5,7 @@ import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.RollcallDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.RollcallDateDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.request.rollcall.AddRollcallDateRequest;
 import com.sswu_2022swcontest.sujungvillage.dto.request.rollcall.ApplyRollcallRequest;
+import com.sswu_2022swcontest.sujungvillage.dto.request.rollcall.ChangeRollcallStateRequest;
 import com.sswu_2022swcontest.sujungvillage.entity.home.Rollcall;
 import com.sswu_2022swcontest.sujungvillage.service.RollcallService;
 import lombok.RequiredArgsConstructor;
@@ -85,10 +86,14 @@ public class RollcallController {
 
     @PatchMapping("/api/admin/rollcall/changeRollcallState")
     public String changeRollcallState(
-            @RequestParam Long rollcallId,
-            @RequestParam String state
-    ){
-        rollcallService.changeRollcallState(rollcallId, state);
+            @RequestBody ChangeRollcallStateRequest body
+            ){
+
+        for(int i = 0; i < body.getRollcallIdAndStates().size(); i++){
+            rollcallService.changeRollcallState(
+                    body.getRollcallIdAndStates().get(i).getRollcallId(),
+                    body.getRollcallIdAndStates().get(i).getState());
+        }
 
         return "상태 변경 완료";
     }
