@@ -22,6 +22,10 @@ public class ExeatService {
     // 외박신청
     public ExeatDTO applyExeat(String destination, String reason, String emergencyPhoneNumber, LocalDate date) {
 
+        if (exeatRepo.alreadyExists(userService.getUser().getId(), date) > 0) {
+            return null;
+        }
+
         return ExeatDTO.entityToDTO(
                 exeatRepo.save(
                         new Exeat(
