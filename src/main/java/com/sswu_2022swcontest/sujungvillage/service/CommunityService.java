@@ -56,14 +56,7 @@ public class CommunityService {
             briefContent = content.substring(0, 20)+"...";
         }
 
-        // 알람 보내기
-        fcmService.sendMessageTo(
-                fcmService.getDeviceToken(post.getWriter().getId()),
-                "새로운 댓글이 작성되었습니다.",
-                briefContent
-        );
-
-        return CommentDTO.entityToDTO(
+        CommentDTO commentDTO = CommentDTO.entityToDTO(
                 commentRepo.save(new Comment(
                         null,
                         post,
@@ -73,6 +66,17 @@ public class CommunityService {
                         null
                 ))
         );
+
+        // 알람 보내기
+        if (post.getWriter().getId() != commentDTO.getWriterId()) {
+            fcmService.sendMessageTo(
+                    fcmService.getDeviceToken(post.getWriter().getId()),
+                    "새로운 댓글이 작성되었습니다.",
+                    briefContent
+            );
+        }
+
+        return commentDTO;
 
     }
 
