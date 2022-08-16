@@ -4,6 +4,7 @@ import com.sswu_2022swcontest.sujungvillage.entity.home.RollcallDate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface RollcallDateRepository extends JpaRepository<RollcallDate, Long> {
@@ -13,7 +14,8 @@ public interface RollcallDateRepository extends JpaRepository<RollcallDate, Long
             nativeQuery = true)
     List<RollcallDate> getRollCallDays(int year, int month, Integer dormitoryId);
 
-    @Query(value="SELECT * FROM rollcall_date WHERE (DATE(start_date_time) = DATE(now()) OR DATE(end_date_time) = DATE(now())) AND (dormitory_id = 0 OR dormitory_id = ?1 ) limit 1 ; "
+    @Query(value="SELECT * FROM rollcall_date WHERE DATE(end_date_time) = DATE( ?2 ) AND (dormitory_id = 0 OR dormitory_id = ?1 ) limit 1 ; "
             , nativeQuery = true)
-    RollcallDate getTodayRollcall(Integer dormitoryId);
+    RollcallDate getTodayRollcall(Integer dormitoryId, LocalDateTime rdt);
+
 }
