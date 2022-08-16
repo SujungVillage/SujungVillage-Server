@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,6 +28,7 @@ public class RollcallService {
     private final RollcallDateRepository rollcallDateRepo;
     private final DormitoryRepository dormitoryRepo;
     private final UserService userService;
+    private final FcmService fcmService;
 
 
     // 점호일 추가
@@ -124,8 +127,15 @@ public class RollcallService {
     @Transactional
     public void changeRollcallState(Long rollcallId, String state) {
 
-        rollcallRepo.findById(rollcallId)
+        Rollcall rollcall = rollcallRepo.findById(rollcallId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 rollcall이 존재하지 않습니다. id="+rollcallId));
+
+        // 알람 보내기
+        fcmService.sendMessageTo(
+                fcmService.getDeviceToken(rollcall.getUser().getId()),
+                "점호가 "+state+"되었습니다.",
+                "점호일시 : "+rollcall.getRollcallTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG))
+        );
 
         rollcallRepo.changeState(rollcallId, state);
 
@@ -158,7 +168,7 @@ public class RollcallService {
     public Boolean isRollcallAvailableNow() {
         Integer dormitoryId = userService.getUser().getDormitory().getId();
 
-        RollcallDate rollcallDate = rollcallDateRepo.getTodayRollcall(dormitoryId);
+        RollcallDate rollcallDate = rollcallDateRepo.getTodayRollcall(dormitoryId, LocalDateTime.now());
 
         if (rollcallDate != null) {
             return (LocalDateTime.now().isAfter(rollcallDate.getStartDateTime()) &&
