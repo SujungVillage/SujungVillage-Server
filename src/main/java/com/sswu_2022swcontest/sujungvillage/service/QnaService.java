@@ -26,6 +26,7 @@ public class QnaService {
     private final AnswerRepository ansRepo;
     private final DormitoryRepository dormitoryRepo;
     private final UserService userService;
+    private final FcmService fcmService;
 
     // FAQ 작성
     public FaqDTO writeFaq(String question, String answer, String dormitoryName) {
@@ -81,6 +82,13 @@ public class QnaService {
 
         Question question = queRepo.findById(questionId)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 질문이 존재하지 않습니다. questionId="+questionId));
+
+        // 알람 보내기
+        fcmService.sendMessageTo(
+                fcmService.getDeviceToken(question.getWriter().getId()),
+                "내 QnA에 답변이 등록되었습니다.",
+                question.getTitle()
+        );
 
         return AnswerDTO.entityToDTO(
                 ansRepo.save(new Answer(
