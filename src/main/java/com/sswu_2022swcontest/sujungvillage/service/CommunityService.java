@@ -9,6 +9,7 @@ import com.sswu_2022swcontest.sujungvillage.entity.User;
 import com.sswu_2022swcontest.sujungvillage.entity.community.Comment;
 import com.sswu_2022swcontest.sujungvillage.entity.community.Post;
 import com.sswu_2022swcontest.sujungvillage.repository.DormitoryRepository;
+import com.sswu_2022swcontest.sujungvillage.repository.UserRepository;
 import com.sswu_2022swcontest.sujungvillage.repository.community.CommentRepository;
 import com.sswu_2022swcontest.sujungvillage.repository.community.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class CommunityService {
     private final CommentRepository commentRepo;
     private final UserService userService;
     private final DormitoryRepository dormitoryRepo;
+    private final FcmService fcmService;
 
     // 게시물 작성
     public PostDTO writePost(String title, String content) {
@@ -48,6 +50,18 @@ public class CommunityService {
 
         Post post = postRepo.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다 postId="+postId));
+
+        String briefContent = content;
+        if (briefContent.length() > 20) {
+            briefContent = content.substring(0, 20)+"...";
+        }
+
+        // 알람 보내기
+        fcmService.sendMessageTo(
+                fcmService.getDeviceToken(post.getWriter().getId()),
+                "새로운 댓글이 작성되었습니다.",
+                briefContent
+        );
 
         return CommentDTO.entityToDTO(
                 commentRepo.save(new Comment(
