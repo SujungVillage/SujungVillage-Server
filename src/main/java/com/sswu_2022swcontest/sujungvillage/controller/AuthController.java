@@ -2,6 +2,8 @@ package com.sswu_2022swcontest.sujungvillage.controller;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.HttpResponse;
+import com.google.api.client.http.HttpResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -46,7 +48,8 @@ public class AuthController {
                         propertyConfig.getGoogleClientId1(),
                         propertyConfig.getGoogleClientId2(),
                         propertyConfig.getGoogleClientId3(),
-                        propertyConfig.getGoogleClientId4()
+                        propertyConfig.getGoogleClientId4(),
+                        propertyConfig.getGoogleClientId5()
                 ))
                 .build();
 
@@ -54,6 +57,7 @@ public class AuthController {
 
         if (idToken == null) {
             // TODO: 유효하지 않은 accss token 오류 반환
+            System.out.println("google access token이 유효하지 않음");
             return null;
         }
 
@@ -63,6 +67,7 @@ public class AuthController {
 
         if (!email.endsWith("@sungshin.ac.kr")) {
             // TODO: 이메일 주소가 @sungshin.ac.kr로 끝나지 않으면 유효하지 않은 사용자 오류 반환
+            System.out.println("사용자의 이메일주소가 @sungshin.ac.kr로 끝나지 않음");
             return null;
         }
 
@@ -70,6 +75,7 @@ public class AuthController {
 
         if (!userService.isResident(userId)) {
             // TODO: 데베에 존재하는 Resident가 아니면 유효하지 않은 사용자 오류 반환
+            System.out.println("데베에 존재하지 않는 사용자임");
             return null;
         }
 
@@ -82,7 +88,10 @@ public class AuthController {
 
         // fcm 토큰 설정하기
         if(body.getFcm_token() != null){
+
             userService.setFcmToken(userId, body.getFcm_token());
+        }else{
+            System.out.println("fcm token이 존재하지 않음");
         }
 
         // jwt 토큰 생성
@@ -105,6 +114,8 @@ public class AuthController {
                 .setExpiration(date)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+
+        System.out.println("로그인성공 : "+userId);
 
         // 응답 반환
         return new StudentLoginResponse(jwt);

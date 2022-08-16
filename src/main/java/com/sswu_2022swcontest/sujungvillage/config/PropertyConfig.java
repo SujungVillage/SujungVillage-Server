@@ -18,6 +18,9 @@ public class PropertyConfig {
     @Value("${googleClientId3}")
     private String googleClientId3;
 
+    @Value("${googleClientId5}")
+    private String googleClientId5;
+
     @Value("${googleClientId4}")
     private String googleClientId4;
 
@@ -39,6 +42,10 @@ public class PropertyConfig {
 
     public String getGoogleClientId4() {
         return googleClientId4;
+    }
+
+    public String getGoogleClientId5() {
+        return googleClientId5;
     }
 
 }
