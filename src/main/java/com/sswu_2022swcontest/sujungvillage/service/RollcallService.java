@@ -134,7 +134,7 @@ public class RollcallService {
         fcmService.sendMessageTo(
                 fcmService.getDeviceToken(rollcall.getUser().getId()),
                 "점호가 "+state+"되었습니다.",
-                "점호일시 : "+rollcall.getRollcallTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG))
+                "점호일시 : "+rollcall.getRollcallTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM))
         );
 
         rollcallRepo.changeState(rollcallId, state);
