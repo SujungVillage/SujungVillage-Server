@@ -192,14 +192,21 @@ public class RollcallService {
 
         Integer dormitoryId = userService.getUser().getDormitory().getId();
 
-        if (state.equals("전체")) {
-            return rollcallRepo.getAllRollcallsByDate(date, dormitoryId)
+        if (dormitoryId == 0) {
+            return rollcallRepo.getAllRollcallsByDate(date)
                     .stream().map(rc -> {
                         return DetailedRollcallDTO.entityToDTO(rc);
                     }).collect(Collectors.toList());
         }
 
-        return rollcallRepo.getAllRollcallsByDateAndState(date, dormitoryId, state)
+        if (state.equals("전체")) {
+            return rollcallRepo.getAllRollcallsByDateAndDormitoryId(date, dormitoryId)
+                    .stream().map(rc -> {
+                        return DetailedRollcallDTO.entityToDTO(rc);
+                    }).collect(Collectors.toList());
+        }
+
+        return rollcallRepo.getAllRollcallsByDateAndDormitoryIdAndState(date, dormitoryId, state)
                 .stream().map(rc -> {
                     return DetailedRollcallDTO.entityToDTO(rc);
                 }).collect(Collectors.toList());
