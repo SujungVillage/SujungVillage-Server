@@ -94,10 +94,10 @@ public class RollcallController {
             @RequestBody ChangeRollcallStateRequest body
             ){
 
-        for(int i = 0; i < body.getRollcallIdAndStates().size(); i++){
+        for(int i = 0; i < body.getRollcallIds().size(); i++){
             rollcallService.changeRollcallState(
-                    body.getRollcallIdAndStates().get(i).getRollcallId(),
-                    body.getRollcallIdAndStates().get(i).getState());
+                    body.getRollcallIds().get(i),
+                    body.getState());
         }
 
         return "상태 변경 완료";
