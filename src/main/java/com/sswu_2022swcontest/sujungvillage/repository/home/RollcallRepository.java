@@ -29,7 +29,8 @@ public interface RollcallRepository extends JpaRepository<Rollcall, Long> {
             , nativeQuery = true)
     Integer changeState(Long rollcallId, String state);
 
-    @Query(value = " SELECT * FROM rollcall WHERE user_id = ?1 AND YEAR(rollcall_time) = ?2 AND MONTH(rollcall_time) = ?3 ; ",
+    @Query(value = " SELECT * FROM rollcall WHERE user_id = ?1 AND YEAR(date_add(rollcall_time, interval -1 day)) = ?2 " +
+            "AND MONTH(date_add(rollcall_time, interval -1 day)) = ?3 ; ",
             nativeQuery = true)
     List<Rollcall> getAppliedRollcallDays(String userId, int year, int month);
 

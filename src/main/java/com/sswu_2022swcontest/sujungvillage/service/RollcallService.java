@@ -154,7 +154,7 @@ public class RollcallService {
                 .map(rc -> {
                     return new AppliedRollcallDayDTO(
                             rc.getId(),
-                            rc.getRollcallTime().getDayOfMonth()
+                            rc.getRollcallTime().minusDays(1).getDayOfMonth()
                     );
                 }).collect(Collectors.toList());
     }
