@@ -228,6 +228,12 @@ public class AuthController {
 
     }
 
+    @GetMapping("/api/common/isAvailableId")
+    public String isAvailableId(
+            @RequestParam String id
+    ){
+        return userService.isAvailableId(id).toString();
+    }
 
     @GetMapping("/api/common/getFcmToken")
     public String getFcmToken(){

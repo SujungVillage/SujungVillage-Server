@@ -120,4 +120,8 @@ public class UserService {
                 }).collect(Collectors.toList());
 
     }
+
+    public Boolean isAvailableId(String id) {
+        return userRepo.findById(id).isEmpty();
+    }
 }
