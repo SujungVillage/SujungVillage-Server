@@ -49,7 +49,8 @@ public class AuthController {
                         propertyConfig.getGoogleClientId2(),
                         propertyConfig.getGoogleClientId3(),
                         propertyConfig.getGoogleClientId4(),
-                        propertyConfig.getGoogleClientId5()
+                        propertyConfig.getGoogleClientId5(),
+                        propertyConfig.getGoogleClientId6()
                 ))
                 .build();
 

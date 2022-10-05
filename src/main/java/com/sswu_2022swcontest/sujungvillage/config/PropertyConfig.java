@@ -24,6 +24,9 @@ public class PropertyConfig {
     @Value("${googleClientId4}")
     private String googleClientId4;
 
+    @Value("${googleClientId6}")
+    private String googleClientId6;
+
     public String getJwtKey(){
         return jwtkey;
     }
@@ -46,6 +49,10 @@ public class PropertyConfig {
 
     public String getGoogleClientId5() {
         return googleClientId5;
+    }
+
+    public String getGoogleClientId6() {
+        return googleClientId6;
     }
 
 }
