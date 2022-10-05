@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -56,6 +57,32 @@ public class UserService {
 
         return false;
 
+    }
+
+    @Transactional
+    public String userSignup(String id, String password, String name, String dormitoryName, String detailedAddress, String phoneNumber){
+
+        if (userRepo.findById(id).isPresent()){
+            return "이미 사용중인 id입니다.";
+        }
+
+        if (dormitoryRepo.findByDormitoryName(dormitoryName).isEmpty()){
+            return "존재하지 않는 기숙사입니다.";
+        }
+
+        Dormitory dormitory = dormitoryRepo.findByDormitoryName(dormitoryName).get();
+
+        userRepo.save(new User(
+                id,
+                name,
+                phoneNumber,
+                dormitory,
+                detailedAddress,
+                password,
+                "ROLE_RESIDENT"
+        ));
+
+        return "회원가입 성공";
     }
 
     public void setFcmToken(String userId, String fcmToken){

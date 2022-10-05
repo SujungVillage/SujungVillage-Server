@@ -10,6 +10,7 @@ import com.sswu_2022swcontest.sujungvillage.config.PropertyConfig;
 import com.sswu_2022swcontest.sujungvillage.dto.request.login.AdminLoginRequest;
 import com.sswu_2022swcontest.sujungvillage.dto.request.login.StudentGoogleLoginRequest;
 import com.sswu_2022swcontest.sujungvillage.dto.request.login.StudentLoginRequest;
+import com.sswu_2022swcontest.sujungvillage.dto.request.login.StudentSignupRequest;
 import com.sswu_2022swcontest.sujungvillage.dto.response.login.AdminLoginResponse;
 import com.sswu_2022swcontest.sujungvillage.dto.response.login.StudentLoginResponse;
 import com.sswu_2022swcontest.sujungvillage.service.UserService;
@@ -211,7 +212,21 @@ public class AuthController {
 
     }
 
+    @PostMapping("/api/student/signup")
+    public String studentSignup(
+            @RequestBody StudentSignupRequest body
+    )  throws GeneralSecurityException, IOException {
 
+        return userService.userSignup(
+                body.getId(),
+                body.getPassword(),
+                body.getName(),
+                body.getDormitoryName(),
+                body.getDetailedAddress(),
+                body.getPhoneNumber()
+        );
+
+    }
 
 
     @GetMapping("/api/common/getFcmToken")
