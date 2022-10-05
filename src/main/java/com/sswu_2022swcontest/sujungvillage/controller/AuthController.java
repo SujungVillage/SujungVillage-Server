@@ -2,15 +2,13 @@ package com.sswu_2022swcontest.sujungvillage.controller;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.http.HttpResponse;
-import com.google.api.client.http.HttpResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.sswu_2022swcontest.sujungvillage.config.PropertyConfig;
 import com.sswu_2022swcontest.sujungvillage.dto.request.login.AdminLoginRequest;
-import com.sswu_2022swcontest.sujungvillage.dto.request.login.StudentLoginRequest;
+import com.sswu_2022swcontest.sujungvillage.dto.request.login.StudentGoogleLoginRequest;
 import com.sswu_2022swcontest.sujungvillage.dto.response.login.AdminLoginResponse;
 import com.sswu_2022swcontest.sujungvillage.dto.response.login.StudentLoginResponse;
 import com.sswu_2022swcontest.sujungvillage.service.UserService;
@@ -33,9 +31,9 @@ public class AuthController {
     private final UserService userService;
     private final PropertyConfig propertyConfig;
 
-    @PostMapping("/api/student/login")
-    public StudentLoginResponse studentLogin(
-            @RequestBody StudentLoginRequest body
+    @PostMapping("/api/student/google_login")
+    public StudentLoginResponse studentGoogleLogin(
+            @RequestBody StudentGoogleLoginRequest body
     ) throws GeneralSecurityException, IOException {
 
         // 토큰 무결성 인증
