@@ -46,7 +46,7 @@ public class UserService {
 
     }
 
-    public Boolean adminLogin(String id, String password){
+    public Boolean userLogin(String id, String password){
         User user = userRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다 userId="+id));
 
