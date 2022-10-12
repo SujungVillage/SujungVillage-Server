@@ -14,6 +14,7 @@ import com.sswu_2022swcontest.sujungvillage.dto.request.login.StudentSignupReque
 import com.sswu_2022swcontest.sujungvillage.dto.response.login.AdminLoginResponse;
 import com.sswu_2022swcontest.sujungvillage.dto.response.login.StudentLoginResponse;
 import com.sswu_2022swcontest.sujungvillage.service.UserService;
+import com.sswu_2022swcontest.sujungvillage.util.JwtUtil;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -32,6 +33,7 @@ public class AuthController {
 
     private final UserService userService;
     private final PropertyConfig propertyConfig;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/api/student/login")
     public StudentLoginResponse studentLogin(
@@ -51,26 +53,8 @@ public class AuthController {
             System.out.println("fcm token이 존재하지 않음");
         }
 
-        // jwt 토큰 생성 후 반환
-        Map<String, Object> jwtHeader = new HashMap<>();
-        jwtHeader.put("typ", "JWT");
-        jwtHeader.put("alg", "HS256");
-
-        Map<String, Object> jwtPayload = new HashMap<>();
-        jwtPayload.put("user_id", body.getId());
-
-        Long expiredTime = 1000 * 60L * 60L * 24L;
-        Date date = new Date();
-        date.setTime(date.getTime() + expiredTime);
-
-        Key key = Keys.hmacShaKeyFor(propertyConfig.getJwtKey().getBytes(StandardCharsets.UTF_8));
-
-        String jwt = Jwts.builder()
-                .setHeader(jwtHeader)
-                .setClaims(jwtPayload)
-                .setExpiration(date)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+        // jwt 토큰 생성
+        String jwt = jwtUtil.createJwtToken(body.getId());
 
         System.out.println("로그인성공 : "+body.getId());
 
@@ -143,25 +127,7 @@ public class AuthController {
         }
 
         // jwt 토큰 생성
-        Map<String, Object> jwtHeader = new HashMap<>();
-        jwtHeader.put("typ", "JWT");
-        jwtHeader.put("alg", "HS256");
-
-        Map<String, Object> jwtPayload = new HashMap<>();
-        jwtPayload.put("user_id", userId);
-
-        Long expiredTime = 1000 * 60L * 60L * 24L;
-        Date date = new Date();
-        date.setTime(date.getTime() + expiredTime);
-
-        Key key = Keys.hmacShaKeyFor(propertyConfig.getJwtKey().getBytes(StandardCharsets.UTF_8));
-
-        String jwt = Jwts.builder()
-                .setHeader(jwtHeader)
-                .setClaims(jwtPayload)
-                .setExpiration(date)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+        String jwt = jwtUtil.createJwtToken(userId);
 
         System.out.println("로그인성공 : "+userId);
 
@@ -186,26 +152,10 @@ public class AuthController {
             userService.setFcmToken(body.getId(), body.getFcm_token());
         }
 
+
+
         // jwt 토큰 생성
-        Map<String, Object> jwtHeader = new HashMap<>();
-        jwtHeader.put("typ", "JWT");
-        jwtHeader.put("alg", "HS256");
-
-        Map<String, Object> jwtPayload = new HashMap<>();
-        jwtPayload.put("user_id", body.getId());
-
-        Long expiredTime = 1000 * 60L * 60L * 24L;
-        Date date = new Date();
-        date.setTime(date.getTime() + expiredTime);
-
-        Key key = Keys.hmacShaKeyFor(propertyConfig.getJwtKey().getBytes(StandardCharsets.UTF_8));
-
-        String jwt = Jwts.builder()
-                .setHeader(jwtHeader)
-                .setClaims(jwtPayload)
-                .setExpiration(date)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+        String jwt = jwtUtil.createJwtToken(body.getId());
 
         // 응답 반환
         return new AdminLoginResponse(jwt);
