@@ -7,11 +7,9 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.sswu_2022swcontest.sujungvillage.config.PropertyConfig;
-import com.sswu_2022swcontest.sujungvillage.dto.request.login.AdminLoginRequest;
-import com.sswu_2022swcontest.sujungvillage.dto.request.login.StudentGoogleLoginRequest;
-import com.sswu_2022swcontest.sujungvillage.dto.request.login.StudentLoginRequest;
-import com.sswu_2022swcontest.sujungvillage.dto.request.login.StudentSignupRequest;
+import com.sswu_2022swcontest.sujungvillage.dto.request.login.*;
 import com.sswu_2022swcontest.sujungvillage.dto.response.login.AdminLoginResponse;
+import com.sswu_2022swcontest.sujungvillage.dto.response.login.RefreshResponse;
 import com.sswu_2022swcontest.sujungvillage.dto.response.login.StudentLoginResponse;
 import com.sswu_2022swcontest.sujungvillage.service.UserService;
 import com.sswu_2022swcontest.sujungvillage.util.JwtUtil;
@@ -194,6 +192,20 @@ public class AuthController {
     @GetMapping("/api/common/getFcmToken")
     public String getFcmToken(){
         return userService.getFcmToken();
+    }
+
+    @PostMapping("/api/common/refresh")
+    public RefreshResponse refresh(
+            @RequestBody RefreshRequest body
+            ){
+
+        String jwt = jwtUtil.refresh(body.getUserId(), body.getRefreshToken());
+
+        if (jwt == null) {
+            return null;
+        }
+
+        return new RefreshResponse(jwt);
     }
 
 }

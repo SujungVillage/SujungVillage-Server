@@ -1,6 +1,8 @@
 package com.sswu_2022swcontest.sujungvillage.util;
 
+import com.google.api.client.util.DateTime;
 import com.sswu_2022swcontest.sujungvillage.config.PropertyConfig;
+import com.sswu_2022swcontest.sujungvillage.dto.response.login.RefreshResponse;
 import com.sswu_2022swcontest.sujungvillage.entity.RefreshToken;
 import com.sswu_2022swcontest.sujungvillage.repository.RefreshTokenRepository;
 import io.jsonwebtoken.Jwts;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,6 +79,33 @@ public class JwtUtil {
         refreshTokenRepository.save(new RefreshToken(userId, refreshToken));
 
         return refreshToken;
+
+    }
+
+    public String refresh(String userId, String refreshToken) {
+
+        // refreshToken 유효성 검증
+        if (!Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(propertyConfig.getJwtKey().getBytes(StandardCharsets.UTF_8)))
+                .build()
+                .parseClaimsJws(refreshToken)
+                .getBody()
+                .getExpiration()
+                .after(new Date())) {
+            return null;
+        }
+
+        // db에서 userId에 해당하는 refreshToken인지 검증
+        if (refreshTokenRepository.findById(userId).isEmpty()) {
+            return null;
+        }
+
+        if (!refreshTokenRepository.findById(userId).get().getRefreshToken().equals(refreshToken)) {
+            return null;
+        }
+
+        // 새로운 jwt 토큰 생성 후 반환
+        return createJwtToken(userId);
 
     }
 }

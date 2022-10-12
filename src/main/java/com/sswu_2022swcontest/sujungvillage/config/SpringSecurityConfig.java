@@ -40,7 +40,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         // 접근권한 설정
         http.authorizeRequests().antMatchers(
                 "/",
-                "/api/student/login", "/api/student/signup", "/api/common/isAvailableId",
+                "/api/student/login", "/api/student/signup", "/api/common/isAvailableId", "/api/common/refresh",
                 "/api/admin/login").permitAll();
 
         http.authorizeRequests().antMatchers(
