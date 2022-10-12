@@ -31,6 +31,14 @@ public class QnaController {
         return qnaService.getAllFaq();
     }
 
+    @DeleteMapping("/api/admin/qna/deleteFaq")
+    public String deleteFaq(
+            @RequestParam Long faqId
+    ){
+
+        return qnaService.deleteFaq(faqId);
+    }
+
     // 질문 작성
     @PostMapping("/api/student/qna/writeQuestion")
     public QuestionDTO writeQuestion(

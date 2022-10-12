@@ -60,6 +60,19 @@ public class QnaService {
 
     }
 
+    // FAQ 삭제
+    @Transactional
+    public String deleteFaq(Long faqId) {
+
+        if (faqRepo.findById(faqId).isEmpty()) {
+            return "faq 삭제 실패";
+        }
+
+        faqRepo.delete(faqRepo.findById(faqId).get());
+
+        return "faq 삭제 성공";
+    }
+
     // 질문 작성
     public QuestionDTO writeQuestion(String title, String content, Boolean anonymous) {
 
