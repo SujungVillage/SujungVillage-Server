@@ -56,10 +56,13 @@ public class AuthController {
         // jwt 토큰 생성
         String jwt = jwtUtil.createJwtToken(body.getId());
 
+        // refresh 토큰 생성
+        String rt = jwtUtil.createRefreshToken(body.getId());
+
         System.out.println("로그인성공 : "+body.getId());
 
         // 응답 반환
-        return new StudentLoginResponse(jwt);
+        return new StudentLoginResponse(jwt, rt);
 
     }
 
@@ -129,10 +132,12 @@ public class AuthController {
         // jwt 토큰 생성
         String jwt = jwtUtil.createJwtToken(userId);
 
+        String rt = jwtUtil.createRefreshToken(userId);
+
         System.out.println("로그인성공 : "+userId);
 
         // 응답 반환
-        return new StudentLoginResponse(jwt);
+        return new StudentLoginResponse(jwt, rt);
 
     }
 
@@ -152,13 +157,14 @@ public class AuthController {
             userService.setFcmToken(body.getId(), body.getFcm_token());
         }
 
-
-
         // jwt 토큰 생성
         String jwt = jwtUtil.createJwtToken(body.getId());
 
+        // refresh 토큰 생성
+        String rt = jwtUtil.createRefreshToken(body.getId());
+
         // 응답 반환
-        return new AdminLoginResponse(jwt);
+        return new AdminLoginResponse(jwt, rt);
 
     }
 

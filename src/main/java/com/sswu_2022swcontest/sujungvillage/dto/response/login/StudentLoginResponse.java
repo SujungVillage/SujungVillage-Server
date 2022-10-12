@@ -10,5 +10,6 @@ import lombok.Setter;
 public class StudentLoginResponse {
 
     private String jwtToken;
+    private String refreshToken;
 
 }
