@@ -8,6 +8,7 @@ import com.sswu_2022swcontest.sujungvillage.repository.home.LmpRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,28 +21,40 @@ public class LmpService {
     private final UserRepository userRepo;
     private final FcmService fcmService;
 
-    // 생활태도점수 부여
-    public LmpDTO addLmp(String residentId, Short score, String reason) {
+    // 생활태도점수 부여 메서드
+    public List<LmpDTO> addLmp(List<String> residentList, Short score, String reason) {
 
-        User user = userRepo.findById(residentId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 재사생, residentId="+residentId));
+        User user;
+        ArrayList<LmpDTO> addedLpm = new ArrayList<>();
 
-        // 알람 보내기
-        fcmService.sendMessageTo(
-                fcmService.getDeviceToken(user.getId()),
-                "생활태도점수가 부여되었습니다.",
-                "점수 : "+score.toString()+", 사유 : "+reason
-        );
+        for(int i = 0; i < residentList.size(); i++){
 
-        return LmpDTO.entityToDTO(
-                lmpRepo.save(new LivingMannerPoint(
-                        null,
-                        user,
-                        score,
-                        reason,
-                        null
-                ))
-        );
+            if ((user = userRepo.findById(residentList.get(i)).orElse(null)) == null) {
+                continue;
+            }
+
+            addedLpm.add(
+                    LmpDTO.entityToDTO(
+                            lmpRepo.save(new LivingMannerPoint(
+                                    null,
+                                    user,
+                                    score,
+                                    reason,
+                                    null
+                            ))
+                    )
+            );
+
+            // 알람 보내기
+            fcmService.sendMessageTo(
+                    fcmService.getDeviceToken(user.getId()),
+                    "생활태도점수가 부여되었습니다.",
+                    "점수 : "+score.toString()+", 사유 : "+reason
+            );
+
+        }
+
+        return addedLpm;
 
     }
 

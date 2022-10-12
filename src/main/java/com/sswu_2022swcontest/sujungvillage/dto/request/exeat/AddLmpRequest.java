@@ -2,10 +2,12 @@ package com.sswu_2022swcontest.sujungvillage.dto.request.exeat;
 
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 public class AddLmpRequest {
 
-    String residentId;
+    List<String> residentList;
     Short score;
     String reason;
 

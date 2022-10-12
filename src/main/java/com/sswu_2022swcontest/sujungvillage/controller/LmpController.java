@@ -19,10 +19,10 @@ public class LmpController {
 
     // 생활태도점수 부여
     @PostMapping("/api/admin/lmp/addLMP")
-    public LmpDTO addLMP(
+    public List<LmpDTO> addLMP(
             @RequestBody AddLmpRequest body
     ){
-        return lmpService.addLmp(body.getResidentId(), body.getScore(), body.getReason());
+        return lmpService.addLmp(body.getResidentList(), body.getScore(), body.getReason());
     }
 
     // 생활태도점수 내역 조회
