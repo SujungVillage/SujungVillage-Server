@@ -2,12 +2,16 @@ package com.sswu_2022swcontest.sujungvillage.service;
 
 import com.sswu_2022swcontest.sujungvillage.dto.dto.exeat.AppliedExeatDayDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.exeat.ExeatDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.dto.exeat.LongTermExeatDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.AppliedRollcallDayDTO;
 import com.sswu_2022swcontest.sujungvillage.entity.home.Exeat;
+import com.sswu_2022swcontest.sujungvillage.entity.home.LongTermExeat;
 import com.sswu_2022swcontest.sujungvillage.repository.home.ExeatRepository;
+import com.sswu_2022swcontest.sujungvillage.repository.home.LongTermExeatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +21,7 @@ import java.util.stream.Collectors;
 public class ExeatService {
 
     private final ExeatRepository exeatRepo;
+    private final LongTermExeatRepository ltexeatRepo;
     private final UserService userService;
 
     // 외박신청
@@ -36,6 +41,24 @@ public class ExeatService {
                                 emergencyPhoneNumber,
                                 date
                         )
+                )
+        );
+    }
+
+    // 장기외박 신청
+    @Transactional
+    public LongTermExeatDTO applyLongTermExeat(String destination, String reason, String emergencyPhoneNumber, LocalDate startDate, LocalDate endDate) {
+
+        return LongTermExeatDTO.entityToDTO(
+                    ltexeatRepo.save(new LongTermExeat(
+                        null,
+                        userService.getUser(),
+                        destination,
+                        reason,
+                        emergencyPhoneNumber,
+                        startDate,
+                        endDate
+                    )
                 )
         );
     }

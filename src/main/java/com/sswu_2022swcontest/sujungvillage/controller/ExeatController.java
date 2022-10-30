@@ -1,7 +1,9 @@
 package com.sswu_2022swcontest.sujungvillage.controller;
 
 import com.sswu_2022swcontest.sujungvillage.dto.dto.exeat.ExeatDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.dto.exeat.LongTermExeatDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.request.exeat.ApplyExeatRequest;
+import com.sswu_2022swcontest.sujungvillage.dto.request.exeat.ApplyLongTermExeatRequest;
 import com.sswu_2022swcontest.sujungvillage.service.ExeatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +43,19 @@ public class ExeatController {
 
     }
 
+    @PostMapping("/api/student/exeat/applyLongTermExeat")
+    public LongTermExeatDTO applyLongTermExeat(
+            @RequestBody ApplyLongTermExeatRequest body
+    ){
+
+        return exeatService.applyLongTermExeat(
+                body.getDestination(),
+                body.getReason(),
+                body.getEmergencyPhoneNumber(),
+                body.getStartDate(),
+                body.getEndDate());
+
+    }
     @GetMapping("/api/student/exeat/getAppliedExeat")
     public ExeatDTO getAppliedExeat(
             @RequestParam Long exeatId
