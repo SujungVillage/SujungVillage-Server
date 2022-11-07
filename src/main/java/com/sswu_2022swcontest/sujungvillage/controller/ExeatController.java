@@ -63,6 +63,13 @@ public class ExeatController {
         return exeatService.getExeat(exeatId);
     }
 
+    @GetMapping("/api/student/exeat/getApplieLongTermExeat")
+    public LongTermExeatDTO getApplieLongTermExeat(
+            @RequestParam Long exeatId
+    ){
+        return exeatService.getApplieLongTermExeat(exeatId);
+    }
+
     @DeleteMapping("/api/student/exeat/cancelExeat")
     public String cancelExeat(
             @RequestParam Long exeatId
