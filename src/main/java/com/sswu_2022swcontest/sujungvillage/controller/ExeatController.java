@@ -79,6 +79,15 @@ public class ExeatController {
         return "외박신청 취소 완료";
     }
 
+    @DeleteMapping("/api/student/exeat/cancelLongTermExeat")
+    public String cancelLongTermExeat(
+            @RequestParam Long exeatId
+    ){
+        exeatService.deleteLongTermExeat(exeatId);
+
+        return "장기 외박신청 취소 완료";
+    }
+
     @GetMapping("/api/student/exeat/numOfExeats")
     public Integer numOfExeats(){
         return exeatService.numOfExeats();

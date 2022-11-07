@@ -86,6 +86,9 @@ public class ExeatService {
         exeatRepo.deleteById(exeatId);
     }
 
+    public void deleteLongTermExeat(Long exeatId) {ltexeatRepo.deleteById(exeatId);
+    }
+
     // 외박신청일 조회
     public List<AppliedExeatDayDTO> getAppliedExeatDays(int year, int month) {
 
