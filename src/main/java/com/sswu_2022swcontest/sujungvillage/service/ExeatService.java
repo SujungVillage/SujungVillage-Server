@@ -1,6 +1,7 @@
 package com.sswu_2022swcontest.sujungvillage.service;
 
 import com.sswu_2022swcontest.sujungvillage.dto.dto.exeat.AppliedExeatDayDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.dto.exeat.AppliedLongTermExeatDayDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.exeat.ExeatDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.exeat.LongTermExeatDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.AppliedRollcallDayDTO;
@@ -101,6 +102,18 @@ public class ExeatService {
                     );
                 }).collect(Collectors.toList());
 
+    }
+
+    public List<AppliedLongTermExeatDayDTO> getLongTermExeats(int year, int month) {
+        return ltexeatRepo.getLongTermExeats(userService.getUser().getId(), year, month)
+                .stream()
+                .map(e -> {
+                    return new AppliedLongTermExeatDayDTO(
+                            e.getId(),
+                            e.getStartDate(),
+                            e.getEndDate()
+                    );
+                }).collect(Collectors.toList());
     }
 
     public Integer numOfExeats() {

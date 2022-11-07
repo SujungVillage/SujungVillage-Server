@@ -10,7 +10,6 @@ import com.sswu_2022swcontest.sujungvillage.service.LmpService;
 import com.sswu_2022swcontest.sujungvillage.service.RollcallService;
 import com.sswu_2022swcontest.sujungvillage.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,6 +49,9 @@ public class HomeController {
 
         // 외박신청일 리스트 조회
         response.setAppliedExeatDays(exeatService.getAppliedExeatDays(year, month));
+
+        // 장기외박 신청 리스트 조회
+        response.setAppliedLongTermExeatDays(exeatService.getLongTermExeats(year, month));
 
         return response;
     }

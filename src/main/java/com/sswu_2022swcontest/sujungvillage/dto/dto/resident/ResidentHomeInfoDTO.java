@@ -1,6 +1,8 @@
 package com.sswu_2022swcontest.sujungvillage.dto.dto.resident;
 
 import com.sswu_2022swcontest.sujungvillage.dto.dto.exeat.AppliedExeatDayDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.dto.exeat.AppliedLongTermExeatDayDTO;
+import com.sswu_2022swcontest.sujungvillage.dto.dto.exeat.LongTermExeatDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.AppliedRollcallDayDTO;
 import com.sswu_2022swcontest.sujungvillage.dto.dto.rollcall.RollcallDayDTO;
 import lombok.Getter;
@@ -18,5 +20,6 @@ public class ResidentHomeInfoDTO {
     private List<RollcallDayDTO> rollcallDays;
     private List<AppliedRollcallDayDTO> appliedRollcallDays;
     private List<AppliedExeatDayDTO> appliedExeatDays;
+    private List<AppliedLongTermExeatDayDTO> appliedLongTermExeatDays;
 
 }
