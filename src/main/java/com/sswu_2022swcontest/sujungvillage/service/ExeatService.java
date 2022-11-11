@@ -54,6 +54,17 @@ public class ExeatService {
     @Transactional
     public LongTermExeatDTO applyLongTermExeat(String destination, String reason, String emergencyPhoneNumber, LocalDate startDate, LocalDate endDate) {
 
+        for (LocalDate d = startDate; d.isBefore(endDate) || d.isEqual(endDate); d = d.plusDays(1)){
+            if(exeatRepo.alreadyExists(userService.getUser().getId(), d) > 0){
+                return null;
+            }
+
+            if(ltexeatRepo.checkOverlap(userService.getUser().getId(), d) > 0){
+                return null;
+            }
+
+        }
+
         return LongTermExeatDTO.entityToDTO(
                     ltexeatRepo.save(new LongTermExeat(
                         null,
