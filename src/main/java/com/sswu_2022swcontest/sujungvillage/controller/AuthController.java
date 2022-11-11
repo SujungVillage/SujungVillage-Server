@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -206,6 +207,25 @@ public class AuthController {
         }
 
         return new RefreshResponse(jwt);
+    }
+
+    @GetMapping("/api/common/validateToken")
+    public Boolean validateToken(
+            @RequestParam String token
+    ){
+
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(propertyConfig.getJwtKey().getBytes(StandardCharsets.UTF_8)))
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getExpiration()
+                    .after(new Date());
+        } catch (Exception e){
+            return false;
+        }
+
     }
 
 }
