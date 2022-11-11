@@ -32,6 +32,10 @@ public class ExeatService {
             return null;
         }
 
+        if(ltexeatRepo.checkOverlap(userService.getUser().getId(), date) > 0){
+            return null;
+        }
+
         return ExeatDTO.entityToDTO(
                 exeatRepo.save(
                         new Exeat(
