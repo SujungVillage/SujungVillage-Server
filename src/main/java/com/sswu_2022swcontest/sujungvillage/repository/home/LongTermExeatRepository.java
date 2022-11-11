@@ -11,7 +11,9 @@ import java.util.List;
 
 public interface LongTermExeatRepository extends JpaRepository<LongTermExeat, Long> {
 
-    @Query(value = " SELECT * FROM long_term_exeat WHERE user_id = ?1 AND YEAR(start_date) = ?2 AND MONTH(start_date) = ?3 ; ",
+    @Query(value = " SELECT * FROM long_term_exeat WHERE user_id = ?1 " +
+            "AND (YEAR(start_date) <= ?2 AND ?2 <= YEAR(end_date)) AND " +
+            "(MONTH(start_date) <= ?3 AND ?3 <= MONTH(end_date)) ; ",
             nativeQuery = true)
     List<LongTermExeat> getLongTermExeats(String id, int year, int month);
 
